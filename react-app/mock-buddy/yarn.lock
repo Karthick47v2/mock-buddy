@@ -5990,6 +5990,11 @@ open@^8.0.9, open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
+opencv-react@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/opencv-react/-/opencv-react-0.0.5.tgz#0659dc9d344e23beb32a1c46b2416456b3ad7d81"
+  integrity sha512-1PJEaTY1NYWsaCa3DAr7bOYXdKWWLjcIEx0XHwmHjhE+9kKKTbQBt43um5eBs+PdB61fzUQNl2Zogra6DIx1nQ==
+
 optionator@^0.8.1:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.8.3.tgz#84fa1d036fe9d3c7e21d99884b601167ec8fb495"

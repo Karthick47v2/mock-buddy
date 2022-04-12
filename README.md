@@ -6,3 +6,8 @@
 TESTTTTTTTT
 
 INLINE CSS (JSX)
+
+BOOTSTRAP
+
+
+react-opencv

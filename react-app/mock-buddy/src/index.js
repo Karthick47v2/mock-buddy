@@ -1,11 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
+import { CV } from "./Pages/CV";
 import "./index.css";
-import { Homepage } from "./Pages/Homepage";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <Homepage />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+    <CV />
+  </React.StrictMode>
+)
