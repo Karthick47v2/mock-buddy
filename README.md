@@ -11,3 +11,7 @@ BOOTSTRAP
 
 
 react-opencv
+
+
+pipwin
+pyaudio

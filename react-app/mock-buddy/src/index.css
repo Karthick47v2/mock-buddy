@@ -1,7 +1,8 @@
-*{
+/* *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #252525;
 }
 
 body {
@@ -15,4 +16,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+
+body {
+  background-color: #252525;
 }

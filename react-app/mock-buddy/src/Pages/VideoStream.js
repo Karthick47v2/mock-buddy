@@ -14,16 +14,16 @@ export const VideoStream = () => {
 
   return (
     <div>
-      <Container fluid>
+      <Container style={{ color: "white" }}>
         <Row>
           <Col></Col>
           <Col xs={5}>
             <Card>
-              <Card.Img
+              {/* <Card.Img
                 varient="top"
                 src="http://localhost:5000/video_stream"
                 alt="video-stream"
-              />
+              /> */}
               <Card.Body>
                 <Card.Title>Video Stream</Card.Title>
                 <Card.Text>hi</Card.Text>
