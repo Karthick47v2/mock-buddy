@@ -1,11 +1,12 @@
 # import required things
+from cProfile import run
 import os
 import pyaudio
 import wave
 from flask import Flask, Response, render_template, request, jsonify
 from pathlib import Path
 from src.video import VideoCam
-from multiprocessing import Process
+from multiprocessing import Process, Manager
 # from google.cloud import speech, storage
 
 app = Flask(__name__)
@@ -49,7 +50,7 @@ def get_name():
 # generate audio frames
 
 
-def gen_audio_frame():
+def gen_audio_frame(rec):
     # speech_client = speech.SpeechClient()
     # storage_client = storage.Client()
 
@@ -61,10 +62,8 @@ def gen_audio_frame():
                         rate=sample_rate, frames_per_buffer=frames_per_buffer, input=True)
 
     audio_frames = []
-    i = 0
-    while i < 1000:
-        i += 1
-        print(i)
+
+    while rec.value:
         audio_frames.append(stream.read(frames_per_buffer))
 
     # stop recording and release resources
@@ -88,16 +87,14 @@ def gen_audio_frame():
 
 # generate frames
 def generate_frame(cam):
-    audio_cpu = Process(target=gen_audio_frame)
+    audio_cpu = Process(target=gen_audio_frame, args=(run_rec,))
     audio_cpu.start()
 
-    i = 0
-    while i < 1000:
-        i += 1
+    while run_rec.value:
         frame = cam.generate_frame()
         # return multiple times / kinda generator - jpeg format for cv frame
         yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    
+
     audio_cpu.join()
 
 
@@ -109,5 +106,15 @@ def video_stream():
                                             haar_cascade_path=haar_cascade_path)), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@ app.route('/video_stream/stop', methods=['POST'])
+def stop_frames():
+    print("CLICKED")
+    run_rec.value = False
+    return render_template('home.html')
+
+
 if __name__ == '__main__':
+    # create shared var
+    run_rec = Manager().Value("b", True)
+
     app.run(debug=True)

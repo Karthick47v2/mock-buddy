@@ -12,6 +12,18 @@ export const VideoStream = () => {
     console.log(isRecord);
   }, [isRecord]);
 
+  const stopRec = () => {
+    fetch("/video_stream/stop", {
+      method: "POST",
+      body: JSON.stringify({
+        content: "hi",
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+  };
+
   return (
     <div>
       <Container style={{ color: "white" }}>
@@ -19,25 +31,25 @@ export const VideoStream = () => {
           <Col></Col>
           <Col xs={5}>
             <Card>
-              {/* <Card.Img
+              <Card.Img
                 varient="top"
                 src="http://localhost:5000/video_stream"
                 alt="video-stream"
-              /> */}
+              />
               <Card.Body>
                 <Card.Title>Video Stream</Card.Title>
                 <Card.Text>hi</Card.Text>
                 <Button
                   variant="danger"
                   onClick={() => setIsRecord(!isRecord)}
-                  disabled={isRecord}
+                  // disabled={isRecord}
                 >
                   Record
                 </Button>
                 <Button
                   variant="success"
-                  onClick={() => setIsRecord(!isRecord)}
-                  disabled={!isRecord}
+                  onClick={() => stopRec()}
+                  // disabled={!isRecord}
                 >
                   Finish
                 </Button>
