@@ -15,3 +15,11 @@ react-opencv
 
 pipwin
 pyaudio
+
+LERN GO
+
+GOOGle cloud json speechs.
+
+
+
+############### CREATE A NEW VENV AND CHECK DEPED

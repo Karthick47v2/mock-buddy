@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 class VideoCam():
     def __init__(self, img_size, edge_offset, haar_cascade_path):
         # webcam
