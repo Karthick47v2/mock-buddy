@@ -5,6 +5,7 @@ import wave
 from flask import Flask, Response, render_template, request, jsonify
 from pathlib import Path
 from src.video import VideoCam
+from multiprocessing import Process
 # from google.cloud import speech, storage
 
 app = Flask(__name__)
@@ -79,7 +80,6 @@ def gen_audio_frame():
     # join all frames inorder to create wav
     sound_file.writeframes(b''.join(audio_frames))
     sound_file.close()
-    print("HI")
 
     # # access bucket
     # bucket = storage_client.get_bucket('stt-store')
@@ -88,11 +88,17 @@ def gen_audio_frame():
 
 # generate frames
 def generate_frame(cam):
-    gen_audio_frame()
-    # while True:
-    #     frame = cam.generate_frame()
-    #     # return multiple times / kinda generator - jpeg format for cv frame
-    #     yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    audio_cpu = Process(target=gen_audio_frame)
+    audio_cpu.start()
+
+    i = 0
+    while i < 1000:
+        i += 1
+        frame = cam.generate_frame()
+        # return multiple times / kinda generator - jpeg format for cv frame
+        yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    
+    audio_cpu.join()
 
 
 @ app.route('/video_stream')
