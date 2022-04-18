@@ -21,5 +21,15 @@ LERN GO
 GOOGle cloud json speechs.
 
 
+React webcam https://github.com/mozmorris/react-webcam
+
 
 ############### CREATE A NEW VENV AND CHECK DEPED
+
+npm install @techstart/opencv-js
+
+      fallback: {
+        fs: false,
+        path: false,
+        crypto: false
+      } adadddddd
