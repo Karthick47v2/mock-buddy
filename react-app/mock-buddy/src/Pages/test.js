@@ -46,7 +46,7 @@ export const Test = () => {
         audio={false}
         videoConstraints={videoConstraints}
         mirrored={true}
-        screenshotFormat={"image/webp"}
+        screenshotFormat={"image/jpeg"}
         ref={webcamRef}
       />
       <button onClick={() => setStreamVid(!streamVid)}> Rec </button>
