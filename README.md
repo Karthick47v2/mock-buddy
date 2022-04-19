@@ -2,6 +2,8 @@
 
 [heroku](https://www.youtube.com/watch?v=Z1RJmh_OqeA) 
 
+PORT 5050
+
 
 TESTTTTTTTT
 
@@ -33,3 +35,8 @@ npm install @techstart/opencv-js
         path: false,
         crypto: false
       } adadddddd
+
+
+https://flask-socketio.readthedocs.io/en/latest/
+
+https://socket.io/docs/v3/client-api/
