@@ -1,19 +1,12 @@
 # import required things
-from distutils.log import debug
-from fileinput import filename
 import os
-from urllib.request import urlopen
-import pyaudio
 import wave
 import datetime
-import socketio
-import urllib3
 import librosa
 import soundfile as sf
-import io
 from flask import Flask, Response, request, jsonify
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from pathlib import Path
 
 from src.consts import *
@@ -29,80 +22,21 @@ app = Flask(__name__)
 # # cross origin
 cors = CORS(app)
 
-socketio = SocketIO(app, cors_allowed_origins="*",
-                    cors_allowed_methods="*", cors_allowd_header="*")
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # CHECK IT OUT #SDSSSSSSSSSSSSSSSs
 #app.config['SECRET_KEY'] = 'myse'
-# app.config['CORS_HEADERS'] = 'Content-Type'
 
 base_path = Path(__file__).parent
 
 # api key
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
-# @app.route('') - decorator
 
-# @app.route('/user', methods=['POST'])
-# def get_name():
-#     user_name = request.get_json()
-#     return(jsonify({'name': user_name['content']}))
-
-
-# # upload wav to bucket
-# def upload_to_g_bucket(file_name, bucket, file_path=None):
-#     try:
-#         blob = bucket.blob(file_name)
-#         blob.upload_from_filename(os.path.join(file_path, file_name))
-#         return True
-#     except Exception as e:
-#         print(e)
-#         return False
-
-
-# # send recorded audio clip to google cloud storage
-# def send_audio_to_cloud(filename, path):
-#     storage_client = storage.Client()
-
-#     # access bucket
-#     bucket = storage_client.get_bucket('stt-store')
-
-#     upload_to_g_bucket(file_name=filename, bucket=bucket,
-#                        file_path=path)
-
-
-# # generate audio frames
-# def gen_audio_frame(rec, audio_save_path):
-#     # speech_client = speech.SpeechClient()
-
-#     # initialize PyAudio
-#     audio = pyaudio.PyAudio()
-#     # https://people.csail.mit.edu/hubert/pyaudio/docs/
-#     # formant, no of channels, sample rate were chose to match with Google Speech to Text input with reduction in size
-#     stream = audio.open(format=pyaudio.paInt16, channels=NO_OF_CHANNELS,
-#                         rate=SAMPLE_RATE, FRAMES_PER_BUFFER=FRAMES_PER_BUFFER, input=True)
-
-#     audio_frames = []
-
-#     while rec.value:
-#         audio_frames.append(stream.read(FRAMES_PER_BUFFER))
-
-#     # stop recording and release resources
-#     stream.stop_stream()
-#     stream.close()
-#     audio.terminate()
-
-#     # save audio in required format
-#     # name as M_D_Y_H_M_S format in order to avoid overwriting issue (**may happen)
-#     filename = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') + '.wav'
-#     sound_file = wave.open(os.path.join(audio_save_path, filename), "wb")
-#     sound_file.setnchannels(NO_OF_CHANNELS)
-#     sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
-#     sound_file.setframerate(SAMPLE_RATE)
-#     # join all frames inorder to create wav
-#     sound_file.writeframes(b''.join(audio_frames))
-#     sound_file.close()
-#     send_audio_to_cloud(filename, audio_save_path)
+# upload wav to bucket
+def upload_to_g_bucket(file_name, bucket):
+    blob = bucket.blob(file_name)
+    blob.upload_from_filename(file_name)
 
 
 # # generate frames
@@ -118,32 +52,72 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
 #     # audio_cpu.join()
 
+
+# change to Google STT required format
+def change_audio_format(file, filename):
+    file.save(filename)
+
+    # DEBUG LATER: currently saving blob to storage b4 processing (mandatory for converting blob to wav)..
+    # Need to find alternative way
+    # some brower's versions doesn't support recording on our specified audio configs, so explicitly converting to required format in backend
+    file, sr = librosa.load(filename, sr=44100)
+    file = librosa.to_mono(file)
+
+    sf.write(filename, file, sr, subtype='PCM_16')
+
+
+# get transcribe from STT
+def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
+    # instantiate audio var
+    audio = speech.RecognitionAudio(uri=(bucket_path + filename))
+
+    # add configs
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=SAMPLE_RATE,
+        enable_automatic_punctuation=True,
+        language_code='en-US',
+        use_enhanced=True,
+        audio_channel_count=NO_OF_CHANNELS,
+        model='video'
+    )
+
+    speech_client = speech.SpeechClient()
+    res = speech_client.long_running_recognize(config=config, audio=audio)
+    res = res.result(timeout=1200)
+
+    for result in res.results:
+        # 0 - high accurate output
+        print("Transcript: {}".format(result.alternatives[0].transcript))
+
+    # we don't need audio file after this step so we can delete that from ggl storage
+    blob = bucket.blob(filename)
+    blob.delete()
+
+
+# Restful APIs
 @app.route('/audio_out/', methods=['POST'])
 def get_audio():
     # try:
     file = request.files['file']
-    filepath = 'audio.wav'
-    file.save(filepath)
+    # name as M_D_Y_H_M_S format in order to avoid overwriting issue (**may happen)
+    filename = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') + '.wav'
 
-    # data, sr = sf.read(filepath)
-    # nf = wave.open('new.wav', 'r')
-    file, sr = librosa.load(filepath)
-    sf.write('audio.wav', file, sr)
+    change_audio_format(file, filename)
 
-    # with wave.open(filepath, 'rb') as f:
-    # nchannels = f.getnchannels()
-    # f.close()
-    with wave.open(filepath, 'wb') as f:
-        f.setnchannels(NO_OF_CHANNELS)
-        f.setframerate(SAMPLE_RATE)
-        f.setsampwidth(2)
-        print("OK")
+    # upload audio to ggl storage (mandatory for transcribing long audios (> 1mins))
+    storage_client = storage.Client()
 
-    # audio_file = wave.open('audio.wav', 'wb')
-    # print("HI", audio_file.getnchannels())
-    # file = librosa.to_mono(file)
-    # file = librosa.resample(file, orig_sr=sr, target_sr=SAMPLE_RATE)
-    print("WORKING")
+    # access bucket
+    bucket = storage_client.get_bucket('stt-store')
+    upload_to_g_bucket(filename, bucket)
+
+    transcribe_audio(filename, bucket)
+
+    # delete existing file in storage
+    if os.path.exists(filename):
+        os.remove(filename)
+
     return {
         'audio': 'received'
     }
