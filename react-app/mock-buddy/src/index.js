@@ -6,7 +6,6 @@ import { Cam } from "./Pages/Cam";
 import { Test } from "./Pages/test";
 import { Nav_Bar } from "./Components/Nav_Bar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { io } from "socket.io-client";
+import { ReactMic } from "react-mic";
+import socketIOClient from "socket.io-client";
 
-// import socketIOClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:5000";
 const socket = io(ENDPOINT);
 
@@ -14,14 +15,41 @@ const videoConstraints = {
   frameRate: { ideal: 24, max: 30 },
 };
 
+// // DEBUG_LATER: this is not supported on firefox (sampleSize, sampleRate, so currently convert it after sending to sever side)
+// // https://blog.addpipe.com/audio-constraints-getusermedia/
+// const audioConstraints = {
+//   sampleSize: 16,
+//   sampleRate: 44100,
+//   channelCount: 1,
+// };
+
 export const Test = () => {
   const webcamRef = useRef(null);
   const [streamVid, setStreamVid] = useState(false);
 
-  // useEffect(() => {
-  //   if (!streamVid) return;
-  //   socket.emit("test", "mydata");
-  // }, [streamVid]);
+  const onRecStop = (blob) => {
+    const formData = new FormData();
+    let blobWithProp = new Blob([blob["blob"]], blob["options"]);
+
+    formData.append("file", blobWithProp);
+
+    const postRequest = {
+      method: "POST",
+      body: formData,
+    };
+    fetch("http://127.0.0.1:5000/audio_out/", postRequest)
+      .then(async (res) => {
+        const data = await res.json();
+        console.log(data);
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     socket.on("get_output", (data) => {
@@ -49,6 +77,15 @@ export const Test = () => {
         screenshotFormat={"image/jpeg"}
         ref={webcamRef}
       />
+      <div style={{ display: "none" }}>
+        <ReactMic
+          record={streamVid}
+          onStop={onRecStop}
+          mimeType="audio/wav"
+          channelCount={1}
+          sampleRate={44100}
+        />
+      </div>
       <button onClick={() => setStreamVid(!streamVid)}> Rec </button>
     </>
   );

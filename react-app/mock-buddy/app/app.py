@@ -1,14 +1,21 @@
 # import required things
 from distutils.log import debug
+from fileinput import filename
 import os
+from urllib.request import urlopen
 import pyaudio
 import wave
 import datetime
 import socketio
-from flask import Flask, Response, request, jsonify, render_template
+import urllib3
+import librosa
+import soundfile as sf
+import io
+from flask import Flask, Response, request, jsonify
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS, cross_origin
 from pathlib import Path
-# constants
+
 from src.consts import *
 from src.face import *
 
@@ -19,10 +26,15 @@ from google.cloud import speech, storage
 
 # create instance
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+# # cross origin
+cors = CORS(app)
+
+socketio = SocketIO(app, cors_allowed_origins="*",
+                    cors_allowed_methods="*", cors_allowd_header="*")
 
 # CHECK IT OUT #SDSSSSSSSSSSSSSSSs
 #app.config['SECRET_KEY'] = 'myse'
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 base_path = Path(__file__).parent
 
@@ -106,14 +118,46 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
 #     # audio_cpu.join()
 
+@app.route('/audio_out/', methods=['POST'])
+def get_audio():
+    # try:
+    file = request.files['file']
+    filepath = 'audio.wav'
+    file.save(filepath)
+
+    # data, sr = sf.read(filepath)
+    # nf = wave.open('new.wav', 'r')
+    file, sr = librosa.load(filepath)
+    sf.write('audio.wav', file, sr)
+
+    # with wave.open(filepath, 'rb') as f:
+    # nchannels = f.getnchannels()
+    # f.close()
+    with wave.open(filepath, 'wb') as f:
+        f.setnchannels(NO_OF_CHANNELS)
+        f.setframerate(SAMPLE_RATE)
+        f.setsampwidth(2)
+        print("OK")
+
+    # audio_file = wave.open('audio.wav', 'wb')
+    # print("HI", audio_file.getnchannels())
+    # file = librosa.to_mono(file)
+    # file = librosa.resample(file, orig_sr=sr, target_sr=SAMPLE_RATE)
+    print("WORKING")
+    return {
+        'audio': 'received'
+    }
+    # except:
+    #     return{
+    #         'audio': 'failed'
+    #     }
+
 
 # SocketIO events
-
-
 @socketio.on('process_frame')
 def detect_facial_points(uri):
-    # detect_face(uri)
-    emit('get_output', detect_face(uri), to=request.sid)
+    detect_face(uri)
+    emit('get_output', request.sid, to=request.sid)
 
 
 @socketio.on('connect')
@@ -134,18 +178,3 @@ if __name__ == '__main__':
     # currently using eventlet server for production env
     # socketio will also take care of restful api calls
     socketio.run(app, port=5000, debug=True)
-
-
-# @ app.route('/video_stream')
-# def video_stream():
-#     # mime define data type of res
-#     # https://developpaper.com/using-multipart-x-mixed-replace-to-realize-http-real-time-video-streaming/
-#     return Response(generate_frame(VideoCam(IMG_SIZE=IMG_SIZE, EDGE_OFFSET=EDGE_OFFSET,
-#                                             haar_cascade_path=haar_cascade_path)), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-# @ app.route('/video_stream/stop', methods=['POST'])
-# def stop_frames():
-#     print("CLICKED")
-#     run_rec.value = False
-#     return render_template('home.html')
