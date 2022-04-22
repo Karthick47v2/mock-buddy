@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { io } from "socket.io-client";
 import { ReactMic } from "react-mic";
+import { getNetSpeed } from "../Components/netspeed_checker";
 import socketIOClient from "socket.io-client";
 
 const ENDPOINT = "http://127.0.0.1:5000";
@@ -14,14 +15,6 @@ const videoConstraints = {
   facingMode: "user", // front-facing - needed for mobile phones
   frameRate: { ideal: 24, max: 30 },
 };
-
-// // DEBUG_LATER: this is not supported on firefox (sampleSize, sampleRate, so currently convert it after sending to sever side)
-// // https://blog.addpipe.com/audio-constraints-getusermedia/
-// const audioConstraints = {
-//   sampleSize: 16,
-//   sampleRate: 44100,
-//   channelCount: 1,
-// };
 
 export const Test = () => {
   const webcamRef = useRef(null);
@@ -56,6 +49,13 @@ export const Test = () => {
       console.log(data);
     });
   }, [socket]);
+
+  useEffect(() => {
+    const netInterval = setInterval(() => {
+      getNetSpeed();
+    }, 5000);
+    return () => clearInterval(netInterval);
+  }, []);
 
   useEffect(() => {
     if (!streamVid) return;

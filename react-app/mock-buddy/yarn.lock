@@ -4264,11 +4264,6 @@
     "loader-utils" "^2.0.0"
     "schema-utils" "^3.0.0"
 
-"file-saver@^2.0.5":
-  "integrity" "sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA=="
-  "resolved" "https://registry.npmjs.org/file-saver/-/file-saver-2.0.5.tgz"
-  "version" "2.0.5"
-
 "filelist@^1.0.1":
   "integrity" "sha512-z7O0IS8Plc39rTCq6i6iHxk43duYOn8uFJiWSewIq0Bww1RNybVHSCjahmcC87ZqAm4OTvFzlzeGu3XAzG1ctQ=="
   "resolved" "https://registry.npmjs.org/filelist/-/filelist-1.0.2.tgz"
@@ -7171,6 +7166,11 @@
   "resolved" "https://registry.npmjs.org/react-ga/-/react-ga-2.7.0.tgz"
   "version" "2.7.0"
 
+"react-internet-meter@^1.1.1":
+  "integrity" "sha512-eEqVY8Af5N8fJnbEKV72OLqyczs3+KYEsMKjv3TgJAxHY8puXsp7IJenfG/D8kML/Fv5Siop/hL9u7YxKKVL1Q=="
+  "resolved" "https://registry.npmjs.org/react-internet-meter/-/react-internet-meter-1.1.1.tgz"
+  "version" "1.1.1"
+
 "react-is@^16.13.1", "react-is@^16.3.2":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -7185,11 +7185,6 @@
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
-
-"react-media-recorder@^1.6.4":
-  "integrity" "sha512-mhFlG+oV3VF7I2FF+sVFbkZAjsMdU+o0EuCI+DKoPaFKWa56kAf4X+lS6ZnG8tmpzzywUKw2HFjHthp7rU0gKg=="
-  "resolved" "https://registry.npmjs.org/react-media-recorder/-/react-media-recorder-1.6.4.tgz"
-  "version" "1.6.4"
 
 "react-mic@^12.4.6":
   "integrity" "sha512-2/DZoz7thR2nJyekF10zBvs/7a8HhUQ4L8MV6BpC+Q/T8G1MvpRHGSHjSlVtnbzaCMDJ3R1MdThoLu15WuVh/g=="
@@ -7274,7 +7269,7 @@
   "resolved" "https://registry.npmjs.org/react-webcam/-/react-webcam-7.0.1.tgz"
   "version" "7.0.1"
 
-"react@*", "react@^15.6.2 || ^16.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^18.0.0", "react@>= 16", "react@>=0.14.0", "react@>=15.0.0", "react@>=16.14.0", "react@>=16.2.0", "react@>=16.6.0", "react@>=16.8.0", "react@16.x":
+"react@*", "react@^15.6.2 || ^16.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^18.0.0", "react@>= 16", "react@>=0.14.0", "react@>=15.0.0", "react@>=16.0.0", "react@>=16.14.0", "react@>=16.2.0", "react@>=16.6.0", "react@>=16.8.0", "react@16.x":
   "integrity" "sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.0.0.tgz"
   "version" "18.0.0"
@@ -7309,11 +7304,6 @@
   "version" "3.6.0"
   dependencies:
     "picomatch" "^2.2.1"
-
-"recordrtc@^5.6.2":
-  "integrity" "sha512-1QNKKNtl7+KcwD1lyOgP3ZlbiJ1d0HtXnypUy7yq49xEERxk31PHvE9RCciDrulPCY7WJ+oz0R9hpNxgsIurGQ=="
-  "resolved" "https://registry.npmjs.org/recordrtc/-/recordrtc-5.6.2.tgz"
-  "version" "5.6.2"
 
 "recursive-readdir@^2.2.2":
   "integrity" "sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg=="
