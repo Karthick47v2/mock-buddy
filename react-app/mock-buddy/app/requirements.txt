@@ -1,3 +1,9 @@
+eventlet
 flask
-opencv-python
 flask-socketio
+flask-cors
+google-api-python-client
+google-cloud-speech
+google-cloud-storage
+librosa
+opencv-python
