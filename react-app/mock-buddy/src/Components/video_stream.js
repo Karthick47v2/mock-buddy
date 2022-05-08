@@ -1,9 +1,7 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import { io } from "socket.io-client";
 import { ReactMic } from "react-mic";
-import { getNetSpeed } from "../Components/netspeed_checker";
-import socketIOClient from "socket.io-client";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 const socket = io(ENDPOINT);
@@ -16,11 +14,11 @@ const videoConstraints = {
   frameRate: { ideal: 24, max: 30 },
 };
 
-export const Test = () => {
+export const VideoStream = ({ isRecord }) => {
   const webcamRef = useRef(null);
-  const [streamVid, setStreamVid] = useState(false);
 
   const onRecStop = (blob) => {
+    console.log("sending audio");
     const formData = new FormData();
     let blobWithProp = new Blob([blob["blob"]], blob["options"]);
 
@@ -51,22 +49,17 @@ export const Test = () => {
   }, [socket]);
 
   useEffect(() => {
-    const netInterval = setInterval(() => {
-      getNetSpeed();
-    }, 5000);
-    return () => clearInterval(netInterval);
-  }, []);
-
-  useEffect(() => {
-    if (!streamVid) return;
+    console.log(isRecord);
+    if (!isRecord) return;
+    console.log("working");
 
     const interval = setInterval(() => {
       const imgSrc = webcamRef.current.getScreenshot();
-      if (!imgSrc) return;
+      if (!imgSrc) return; 
       socket.emit("process_frame", imgSrc);
     }, 1000);
     return () => clearInterval(interval);
-  }, [streamVid]);
+  }, [isRecord]);
 
   return (
     <>
@@ -79,14 +72,13 @@ export const Test = () => {
       />
       <div style={{ display: "none" }}>
         <ReactMic
-          record={streamVid}
+          record={isRecord}
           onStop={onRecStop}
           mimeType="audio/wav"
           channelCount={1}
           sampleRate={44100}
         />
       </div>
-      <button onClick={() => setStreamVid(!streamVid)}> Rec </button>
     </>
   );
 };

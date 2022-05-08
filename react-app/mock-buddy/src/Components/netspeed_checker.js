@@ -5,7 +5,7 @@ const imgAdd =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1920px-Google_2015_logo.svg.png";
 const size = 69819 * 8; // bits
 
-export const getNetSpeed = async () => {
+export const getNetSpeed = async (limit) => {
   const sTime = new Date().getTime();
 
   const dload = new Image();
@@ -17,9 +17,6 @@ export const getNetSpeed = async () => {
   const duration = (new Date().getTime() - sTime) / 1000;
   const speedBps = (size / duration).toFixed(2);
   const speedKbps = (speedBps / 1024).toFixed(2);
-  const speedMbps = (speedKbps / 1024).toFixed(2);
 
-  speedMbps > 1
-    ? console.log(speedMbps + "Mbps")
-    : console.log(speedKbps + "Kbps");
+  return speedKbps > limit;
 };
