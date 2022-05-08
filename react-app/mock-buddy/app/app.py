@@ -1,7 +1,7 @@
 # import required things
 import os
 import datetime
-import librosa #https://stackoverflow.com/questions/67331302/not-able-to-install-librosa
+import librosa  # https://stackoverflow.com/questions/67331302/not-able-to-install-librosa
 import soundfile as sf
 from flask import Flask, Response, request, jsonify
 from flask_socketio import SocketIO, emit
@@ -100,33 +100,33 @@ def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
 # Restful APIs
 @app.route('/audio_out/', methods=['POST'])
 def get_audio():
-    try:
-        file = request.files['file']
-        # name as M_D_Y_H_M_S format in order to avoid overwriting issue (**may happen)
-        filename = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') + '.wav'
+    # try:
+    file = request.files['file']
+    # name as M_D_Y_H_M_S format in order to avoid overwriting issue (**may happen)
+    filename = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') + '.wav'
 
-        audio_duration = change_audio_format(file, filename)
+    audio_duration = change_audio_format(file, filename)
 
-        # upload audio to ggl storage (mandatory for transcribing long audios (> 1mins))
-        storage_client = storage.Client()
+    # upload audio to ggl storage (mandatory for transcribing long audios (> 1mins))
+    storage_client = storage.Client()
 
-        # access bucket
-        bucket = storage_client.get_bucket('stt-store')
-        upload_to_g_bucket(filename, bucket)
+    # access bucket
+    bucket = storage_client.get_bucket('stt-store')
+    upload_to_g_bucket(filename, bucket)
 
-        transcribe_audio(filename, bucket)
+    transcribe_audio(filename, bucket)
 
-        # delete existing file in storage
-        if os.path.exists(filename):
-            os.remove(filename)
+    # delete existing file in storage
+    if os.path.exists(filename):
+        os.remove(filename)
 
-        return {
-            'audio': 'received'
-        }
-    except:
-        return{
-            'audio': 'failed'
-        }
+    return {
+        'audio': 'received'
+    }
+    # except:
+    # return{
+    # 'audio': 'failed'
+    # }
 
 
 # SocketIO events

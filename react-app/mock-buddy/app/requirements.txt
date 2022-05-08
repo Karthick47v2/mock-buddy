@@ -1,4 +1,5 @@
 eventlet
+ffmpeg
 flask
 flask-socketio
 flask-cors
