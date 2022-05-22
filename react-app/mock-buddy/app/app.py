@@ -32,6 +32,13 @@ base_path = Path(__file__).parent
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
 
+# set metadata
+metadata = speech.RecognitionMetadata()
+metadata.interaction_type = speech.RecognitionMetadata.InteractionType.PRESENTATION
+metadata.original_media_type = speech.RecognitionMetadata.OriginalMediaType.AUDIO
+metadata.recording_device_type = speech.RecognitionMetadata.RecordingDeviceType.PC
+
+
 # upload wav to bucket
 def upload_to_g_bucket(file_name, bucket):
     blob = bucket.blob(file_name)
@@ -78,16 +85,13 @@ def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
     # add configs
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        # BETER CHEKC THIS WITH ALL LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl SAMPLE RATE
         sample_rate_hertz=SAMPLE_RATE,
         enable_automatic_punctuation=True,
         language_code='en-US',  # HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-        profanityFilter=False,  # TODO : CHECK SWEAR WORDS
+        profanity_filter=False,
         use_enhanced=True,
         audio_channel_count=NO_OF_CHANNELS,
-        metadata={interactionType: InteractionType.PRESENTATION,
-                  originalMediaType: OriginalMediaType.AUDIO, recordingDeviceType: RecordingDeviceType.PC},
-        model='video'
+        metadata=metadata,
     )
 
     speech_client = speech.SpeechClient()
