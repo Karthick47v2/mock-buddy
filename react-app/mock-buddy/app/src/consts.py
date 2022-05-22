@@ -7,5 +7,5 @@ MIN_NEIGHBOURS = 3
 MIN_SIZE = (30, 30)
 
 # Audio config required for google text to speech
-SAMPLE_RATE = 44100             # in Hz
+SAMPLE_RATE = 16000             # in Hz
 NO_OF_CHANNELS = 1              # mono channel

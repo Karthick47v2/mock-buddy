@@ -59,7 +59,8 @@ def change_audio_format(file, filename):
     # DEBUG LATER: currently saving blob to storage b4 processing (mandatory for converting blob to wav)..
     # Need to find alternative way
     # some brower's versions doesn't support recording on our specified audio configs, so explicitly converting to required format in backend
-    file, sr = librosa.load(filename, sr=44100)
+    # BEST FOR SPEECH RECOG
+    file, sr = librosa.load(filename, sr=16000)
     file = librosa.to_mono(file)
 
     sf.write(filename, file, sr, subtype='PCM_16')
@@ -69,6 +70,7 @@ def change_audio_format(file, filename):
 
 
 # get transcribe from STT
+# https://cloud.google.com/speech-to-text/docs/reference/rest/v1/RecognitionConfig
 def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
     # instantiate audio var
     audio = speech.RecognitionAudio(uri=(bucket_path + filename))
@@ -76,11 +78,15 @@ def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
     # add configs
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        # BETER CHEKC THIS WITH ALL LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl SAMPLE RATE
         sample_rate_hertz=SAMPLE_RATE,
         enable_automatic_punctuation=True,
-        language_code='en-US',
+        language_code='en-US',  # HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+        profanityFilter=False,  # TODO : CHECK SWEAR WORDS
         use_enhanced=True,
         audio_channel_count=NO_OF_CHANNELS,
+        metadata={interactionType: InteractionType.PRESENTATION,
+                  originalMediaType: OriginalMediaType.AUDIO, recordingDeviceType: RecordingDeviceType.PC},
         model='video'
     )
 
