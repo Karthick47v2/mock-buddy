@@ -39,7 +39,7 @@ export const Practice = () => {
                       <Nav.Link href='#third'>Audio only</Nav.Link>
                   </Nav>
               </Card.Header>
-              {/* <VideoStream isRecord={isRecord}/> */}
+              <VideoStream isRecord={isRecord}/>
               <Slide />
               <Card.Body>
                 <Card.Title>Video Stream</Card.Title>

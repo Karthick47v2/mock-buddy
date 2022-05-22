@@ -8,11 +8,11 @@ import numpy as np
 # import tensorflow as tf
 # from tensorflow import keras
 
-# # sound recording
-# import pyaudio
+# sound recording
+import pyaudio
 
-# # save wav file
-# import wave
+# save wav file
+import wave
 
 # # run inference and sound rec as separate processes - inference may breakdown sound
 # import multiprocessing as mp
@@ -50,35 +50,35 @@ no_of_channels = 1
 #     return frame
 
 
-# def audio_func():
-#     # initialize PyAudio
-#     print("running on sub")
-#     audio = pyaudio.PyAudio()
-#     # https://people.csail.mit.edu/hubert/pyaudio/docs/
-#     # formant, no of channels, sample rate were chose to match with Google Speech to Text input with reduction in size
-#     stream = audio.open(format=pyaudio.paInt16, channels=no_of_channels,
-#                         rate=sample_rate, frames_per_buffer=frames_per_buffer, input=True)
+def audio_func():
+    # initialize PyAudio
+    print("running on sub")
+    audio = pyaudio.PyAudio()
+    # https://people.csail.mit.edu/hubert/pyaudio/docs/
+    # formant, no of channels, sample rate were chose to match with Google Speech to Text input with reduction in size
+    stream = audio.open(format=pyaudio.paInt16, channels=no_of_channels,
+                        rate=sample_rate, frames_per_buffer=frames_per_buffer, input=True)
 
-#     audio_frames = []
-#     i = 0
-#     while i < 1000:
-#         print(i)
-#         i += 1
-#         audio_frames.append(stream.read(frames_per_buffer))
+    audio_frames = []
+    i = 0
+    while i < 1000:
+        print(i)
+        i += 1
+        audio_frames.append(stream.read(frames_per_buffer))
 
-#     # stop recording and release resources
-#     stream.stop_stream()
-#     stream.close()
-#     audio.terminate()
+    # stop recording and release resources
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
 
-#     # save audio in required format
-#     sound_file = wave.open("rec.wav", "wb")
-#     sound_file.setnchannels(no_of_channels)
-#     sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
-#     sound_file.setframerate(sample_rate)
-#     # join all frames inorder to create wav
-#     sound_file.writeframes(b''.join(audio_frames))
-#     sound_file.close()
+    # save audio in required format
+    sound_file = wave.open("rec.wav", "wb")
+    sound_file.setnchannels(no_of_channels)
+    sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+    sound_file.setframerate(sample_rate)
+    # join all frames inorder to create wav
+    sound_file.writeframes(b''.join(audio_frames))
+    sound_file.close()
 
 
 def video_func():
@@ -175,10 +175,10 @@ def video_func():
     # sound_file.close()
 
 
-if __name__ == '__main__':
-    # audio_cpu = mp.Process(target=audio_func)
-    # audio_cpu.start()
-    video_func()
+# if __name__ == '__main__':
+#     # audio_cpu = mp.Process(target=audio_func)
+#     # audio_cpu.start()
+#     video_func()
 
 
 # audio_cpu = mp.Process(target=audio_func)
@@ -187,4 +187,4 @@ if __name__ == '__main__':
 # video_cpu.start()
 
 # video_func()
-# audio_func()
+audio_func()

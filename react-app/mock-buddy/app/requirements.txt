@@ -8,3 +8,5 @@ google-cloud-speech
 google-cloud-storage
 librosa
 opencv-python
+pyaudio
+webrtcvad
