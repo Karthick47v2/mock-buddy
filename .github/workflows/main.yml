@@ -28,7 +28,6 @@ jobs:
           pip install -r requirements.txt
       - name: Analyze
         run: |
-          pylint --extension-pkg-whitelist=cv2
           pylint $(git ls-files '*.py')
       # - name: Test
       #   run: |

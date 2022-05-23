@@ -1,6 +1,6 @@
 """face and facial features detection"""
 
-import cv2
+from cv2 import cv2
 import base64
 import numpy as np
 
