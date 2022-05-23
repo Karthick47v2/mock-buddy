@@ -2,7 +2,7 @@
 
 from google.cloud import speech
 
-
+# pylint: disable=too-few-public-methods
 class GoogleSTT:
     """Class holding all STT operations"""
     SAMPLE_RATE = 16000
@@ -41,4 +41,4 @@ class GoogleSTT:
         res = res.result(timeout=1200)
         for result in res.results:
             # 0 - high accurate output
-            print("Transcript: {}".format(result.alternatives[0].transcript))
+            print(f"Transcript: {result.alternatives[0].transcript}")

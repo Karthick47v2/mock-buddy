@@ -1,9 +1,10 @@
+"""Process client requests"""
+
 import os
 import datetime
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
-from multiprocessing import Process, Manager
 
 from src.face_model import FaceModel
 from src.audio_util import Audio
@@ -59,6 +60,8 @@ def get_audio():
 
     audio_duration = audio_file.change_audio_format(
         file)  # AUDIO DUCRATION NEEDED ####################################
+
+    print(audio_duration)
 
     # upload audio to ggl storage (mandatory for transcribing long audio (> 1mins))
     audio_file.storage.upload_to_bucket(audio_file.file_name)

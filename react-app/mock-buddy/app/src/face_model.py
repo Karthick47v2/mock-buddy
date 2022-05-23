@@ -1,10 +1,12 @@
 """face and facial features detection"""
 
-import cv2
+from cv2 import cv2
 import base64
 import numpy as np
 
 
+# pylint: disable=too-few-public-methods
+# pylint: disable=no-self-use
 class FaceModel:
     """Class for facial keypoints detection"""
     __IMG_SIZE = 96
@@ -43,37 +45,37 @@ class FaceModel:
             gray_scale, scaleFactor=scale_fac, minNeighbors=min_neighbours, minSize=min_size)
 
         areas = [w*h for x, y, w, h in faces_rect]
-        # only using detection with big box
-        try:
-            large_rect = np.argmax(areas)
-            bbox = faces_rect[large_rect]
+        # # only using detection with big box
+        # try:
+        #     large_rect = np.argmax(areas)
+        #     bbox = faces_rect[large_rect]
 
-            # extending and clipping bounding box a bit in order to create input for model
-            bbox[2] += bbox[0] + FaceModel.__EDGE_OFFSET
-            bbox[3] += bbox[1] + FaceModel.__EDGE_OFFSET
-            bbox[0] -= FaceModel.__EDGE_OFFSET
-            bbox[1] -= FaceModel.__EDGE_OFFSET
+        #     # extending and clipping bounding box a bit in order to create input for model
+        #     bbox[2] += bbox[0] + FaceModel.__EDGE_OFFSET
+        #     bbox[3] += bbox[1] + FaceModel.__EDGE_OFFSET
+        #     bbox[0] -= FaceModel.__EDGE_OFFSET
+        #     bbox[1] -= FaceModel.__EDGE_OFFSET
 
-            X = np.clip(bbox[[0, 2]], 0, frame.shape[1])
-            Y = np.clip(bbox[[1, 3]], 0, frame.shape[0])
+        #     X = np.clip(bbox[[0, 2]], 0, frame.shape[1])
+        #     Y = np.clip(bbox[[1, 3]], 0, frame.shape[0])
 
-            # roi
-            input_frame = np.array(gray_scale[Y[0]: Y[1], X[0]: X[1]])
+        #     # roi
+        #     input_frame = np.array(gray_scale[Y[0]: Y[1], X[0]: X[1]])
 
-            frame_h, frame_w = input_frame.shape[:2]
-            scale_h, scale_w = FaceModel.__IMG_SIZE / \
-                frame_h, FaceModel.__IMG_SIZE / frame_w
+        #     frame_h, frame_w = input_frame.shape[:2]
+        #     scale_h, scale_w = FaceModel.__IMG_SIZE / \
+        #         frame_h, FaceModel.__IMG_SIZE / frame_w
 
-            # resize to 96x96
-            input_frame = cv2.resize(
-                input_frame, (FaceModel.__IMG_SIZE, FaceModel.__IMG_SIZE)).astype(np.uint8)
+        #     # resize to 96x96
+        #     input_frame = cv2.resize(
+        #         input_frame, (FaceModel.__IMG_SIZE, FaceModel.__IMG_SIZE)).astype(np.uint8)
 
-            # inference
-            # frame = draw_landmark(input_frame)
-            # print(model.predict(input_frame).shape)
-            return 'fine'
-        except:
-            ##########################
-            person_not_facing = True
-            ##########################
-            return "not fine"
+        #     # inference
+        #     # frame = draw_landmark(input_frame)
+        #     # print(model.predict(input_frame).shape)
+        #     return 'fine'
+        # except:
+        #     ##########################
+        #     person_not_facing = True
+        #     ##########################
+        #     return "not fine"

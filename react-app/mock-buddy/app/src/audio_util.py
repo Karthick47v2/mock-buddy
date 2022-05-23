@@ -20,7 +20,7 @@ class Audio:
         self.__file_name = file_name
         self.storage = GoogleStorage()
         self.stt = GoogleSTT()
-        self.vad = VAD()
+        self.vad = VAD(self.__file_name)
 
     @property
     def file_name(self):
@@ -42,12 +42,13 @@ class Audio:
         """
         file.save(self.__file_name)
 
+        # pylint: disable=fixme
         # TODO: currently saving blob to local before processing (mandatory for converting
         # blob to wav)... Need to find an alternative way
         # some brower's versions doesn't support recording on requied audio format,
         #  so explicitly converting to required format in backend
-        file, sr = librosa.load(self.__file_name, sr=self.stt.SAMPLE_RATE)
+        file, s_rate = librosa.load(self.__file_name, sr=self.stt.SAMPLE_RATE)
         file = librosa.to_mono(file)
 
-        sf.write(self.__file_name, file, sr, subtype='PCM_16')
-        return librosa.get_duration(y=file, sr=sr)
+        sf.write(self.__file_name, file, s_rate, subtype='PCM_16')
+        return librosa.get_duration(y=file, sr=s_rate)
