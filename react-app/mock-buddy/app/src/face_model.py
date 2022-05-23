@@ -1,12 +1,13 @@
 """face and facial features detection"""
 
-from cv2 import cv2
 import base64
 import numpy as np
-
+from cv2 import cv2
 
 # pylint: disable=too-few-public-methods
 # pylint: disable=no-self-use
+
+
 class FaceModel:
     """Class for facial keypoints detection"""
     __IMG_SIZE = 96
