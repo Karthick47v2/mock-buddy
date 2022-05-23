@@ -1,48 +1,32 @@
-# import required things
 import os
 import datetime
-import librosa  # https://stackoverflow.com/questions/67331302/not-able-to-install-librosa
-import soundfile as sf
-from flask import Flask, Response, request, jsonify
+from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
-from pathlib import Path
+from multiprocessing import Process, Manager
 
-from src.consts import *
-from src.face import *
+from src.face_model import FaceModel
+from src.audio_util import Audio
+
 
 #### SESSION ######
 
-from multiprocessing import Process, Manager
-from google.cloud import speech, storage
 
-# create instance
+# create app instance with CORS
 app = Flask(__name__)
-# # cross origin
 cors = CORS(app)
 
+# socket comm
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # CHECK IT OUT #SDSSSSSSSSSSSSSSSs
 #app.config['SECRET_KEY'] = 'myse'
 
-base_path = Path(__file__).parent
-
 # api key
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
-
-# set metadata
-metadata = speech.RecognitionMetadata()
-metadata.interaction_type = speech.RecognitionMetadata.InteractionType.PRESENTATION
-metadata.original_media_type = speech.RecognitionMetadata.OriginalMediaType.AUDIO
-metadata.recording_device_type = speech.RecognitionMetadata.RecordingDeviceType.PC
-
-
-# upload wav to bucket
-def upload_to_g_bucket(file_name, bucket):
-    blob = bucket.blob(file_name)
-    blob.upload_from_filename(file_name)
+# initialize models
+fm = FaceModel()
 
 
 # # generate frames
@@ -59,76 +43,33 @@ def upload_to_g_bucket(file_name, bucket):
 #     # audio_cpu.join()
 
 
-# change to Google STT required format
-def change_audio_format(file, filename):
-    file.save(filename)
-
-    # DEBUG LATER: currently saving blob to storage b4 processing (mandatory for converting blob to wav)..
-    # Need to find alternative way
-    # some brower's versions doesn't support recording on our specified audio configs, so explicitly converting to required format in backend
-    # BEST FOR SPEECH RECOG
-    file, sr = librosa.load(filename, sr=16000)
-    file = librosa.to_mono(file)
-
-    sf.write(filename, file, sr, subtype='PCM_16')
-
-    # to detect speech speed -- will be used later
-    return librosa.get_duration(y=file, sr=sr)
-
-
-# get transcribe from STT
-# https://cloud.google.com/speech-to-text/docs/reference/rest/v1/RecognitionConfig
-def transcribe_audio(filename, bucket, bucket_path='gs://stt-store/'):
-    # instantiate audio var
-    audio = speech.RecognitionAudio(uri=(bucket_path + filename))
-
-    # add configs
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=SAMPLE_RATE,
-        enable_automatic_punctuation=True,
-        language_code='en-US',  # HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-        profanity_filter=False,
-        use_enhanced=True,
-        audio_channel_count=NO_OF_CHANNELS,
-        metadata=metadata,
-    )
-
-    speech_client = speech.SpeechClient()
-    res = speech_client.long_running_recognize(config=config, audio=audio)
-    res = res.result(timeout=1200)
-
-    for result in res.results:
-        # 0 - high accurate output
-        print("Transcript: {}".format(result.alternatives[0].transcript))
-
-    # we don't need audio file after this step so we can delete that from ggl storage
-    blob = bucket.blob(filename)
-    blob.delete()
-
-
 # Restful APIs
 @app.route('/audio_out/', methods=['POST'])
 def get_audio():
+    """Process audio file sent from client
+
+    Returns:
+        dict[str,str]: response
+    """
     # try:
     file = request.files['file']
-    # name as M_D_Y_H_M_S format in order to avoid overwriting issue (**may happen)
-    filename = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') + '.wav'
+    # name as M_D_Y_H_M_S format in order to avoid overwriting issue
+    audio_file = Audio(file_name=datetime.datetime.now().strftime(
+        '%m_%d_%Y_%H_%M_%S') + '.wav')
 
-    audio_duration = change_audio_format(file, filename)
+    audio_duration = audio_file.change_audio_format(
+        file)  # AUDIO DUCRATION NEEDED ####################################
 
-    # upload audio to ggl storage (mandatory for transcribing long audios (> 1mins))
-    storage_client = storage.Client()
+    # upload audio to ggl storage (mandatory for transcribing long audio (> 1mins))
+    audio_file.storage.upload_to_bucket(audio_file.file_name)
 
-    # access bucket
-    bucket = storage_client.get_bucket('stt-store')
-    upload_to_g_bucket(filename, bucket)
+    audio_file.stt.transcribe(
+        audio_file.storage.bucket_name, audio_file.file_name)
 
-    transcribe_audio(filename, bucket)
-
-    # delete existing file in storage
-    if os.path.exists(filename):
-        os.remove(filename)
+    # delete existing file in storage (local and cloud)
+    audio_file.storage.delete_file(audio_file.file_name)
+    if os.path.exists(audio_file.file_name):
+        os.remove(audio_file.file_name)
 
     return {
         'audio': 'received'
@@ -142,17 +83,24 @@ def get_audio():
 # SocketIO events
 @socketio.on('process_frame')
 def detect_facial_points(uri):
-    detect_face(uri)
+    """Detect facial keypoints from request => send prediction as response
+
+    Args:
+        uri (str): base64 encoded frame
+    """
+    fm.detect_face(uri)
     emit('get_output', request.sid, to=request.sid)
 
 
 @socketio.on('connect')
 def connected():
+    """Trigger when new client connects"""
     print("[Clinet Connected]")
 
 
 @socketio.on('disconnect')
 def disconnected():
+    """Trigger when client disconnects"""
     print("[Client Disconnected]")
 
 
