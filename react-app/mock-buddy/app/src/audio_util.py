@@ -5,6 +5,7 @@ import soundfile as sf
 
 from .ggl.google_storage import GoogleStorage
 from .ggl.google_stt import GoogleSTT
+from .ggl.vad import VAD
 
 
 class Audio:
@@ -19,6 +20,7 @@ class Audio:
         self.__file_name = file_name
         self.storage = GoogleStorage()
         self.stt = GoogleSTT()
+        self.vad = VAD()
 
     @property
     def file_name(self):
