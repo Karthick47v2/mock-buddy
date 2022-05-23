@@ -6,6 +6,7 @@ import wave
 import webrtcvad
 
 # pylint: disable=too-few-public-methods
+# pylint: disable=no-self-use
 
 
 class Frame():
@@ -25,6 +26,7 @@ class Frame():
 
 
 class VAD:
+    """Class holding all VAD operations"""
 
     def __init__(self, file_name):
         self.__audio, self.__sample_rate = self.__read_wave(file_name)
@@ -40,8 +42,8 @@ class VAD:
         #
         #
 
-        with wave.open(path, 'rb') as f:
-            return f.readframes(f.getnframes()), f.getframerate()
+        with wave.open(path, 'rb') as file:
+            return file.readframes(file.getnframes()), file.getframerate()
 
     def __frame_generator(self, frame_duration_ms, audio, sample_rate):
         """Generates audio frames from PCM audio data.
@@ -49,14 +51,14 @@ class VAD:
         Yields:
             Frame: frame for required duration
         """
-        n = int(sample_rate * (frame_duration_ms / 1000.0) * 2)
+        num = int(sample_rate * (frame_duration_ms / 1000.0) * 2)
         offset = 0
         timestamp = 0.0
-        duration = (float(n) / sample_rate) / 2.0
-        while offset + n < len(audio):
-            yield Frame(audio[offset:offset + n], timestamp, duration)
+        duration = (float(num) / sample_rate) / 2.0
+        while offset + num < len(audio):
+            yield Frame(audio[offset:offset + num], timestamp, duration)
             timestamp += duration
-            offset += n
+            offset += num
 
     def __vad_collector(self, sample_rate, vad, frames):
         """Filters out non-voiced audio frames.

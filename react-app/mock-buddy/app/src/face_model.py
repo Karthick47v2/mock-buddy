@@ -1,6 +1,6 @@
 """face and facial features detection"""
 
-from cv2 import cv2
+import cv2
 import base64
 import numpy as np
 
@@ -44,7 +44,7 @@ class FaceModel:
         faces_rect = self.__face_cascade.detectMultiScale(
             gray_scale, scaleFactor=scale_fac, minNeighbors=min_neighbours, minSize=min_size)
 
-        areas = [w*h for x, y, w, h in faces_rect]
+        # areas = [w*h for x, y, w, h in faces_rect]
         # # only using detection with big box
         # try:
         #     large_rect = np.argmax(areas)
