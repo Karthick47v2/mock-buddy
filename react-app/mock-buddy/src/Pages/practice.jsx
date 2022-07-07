@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Card, Row, Col, Button, Container, Nav } from "react-bootstrap";
 import { VideoStream } from "../Components/video_stream";
 import { getNetSpeed } from "../Components/netspeed_checker";
 import { Slide } from "../Components/slide";

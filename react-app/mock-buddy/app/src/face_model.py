@@ -3,20 +3,20 @@
 import base64
 import numpy as np
 from cv2 import cv2
+from tensorflow import keras
 
-# pylint: disable=too-few-public-methods
 # pylint: disable=no-self-use
 
 
 class FaceModel:
     """Class for facial keypoints detection"""
     __IMG_SIZE = 96
-    __EDGE_OFFSET = 75
 
     def __init__(self):
         """Initialize cascade classsifier"""
-        self.__face_cascade = cv2.CascadeClassifier(
-            './haarcascade_xml/haarcascade_frontalface_alt2.xml')
+        self.__face_dnn = cv2.dnn.readNetFromCaffe(
+            'dnn/deploy.prototxt', 'dnn/res10_300x300_ssd_iter_140000.caffemodel')
+        self.__model = keras.models.load_model('./conv_model')
 
     def __decode_b64(self, uri):
         """Decode base64 to cv2 frame
@@ -31,54 +31,82 @@ class FaceModel:
         buff = np.frombuffer(base64.b64decode(b64_str), np.int8)
         return cv2.imdecode(buff, cv2.IMREAD_COLOR)
 
-    def detect_face(self, uri, scale_fac=1.4, min_neighbours=3, min_size=(30, 30)):
+    def reset(self):
+        self.__interactivity = [0]
+        self.__inactive = 0
+        self.__look = 0
+
+    def __extract_kps(self, frame):
+        y_pred = self.__model.predict(np.expand_dims(
+            frame.reshape(FaceModel.__IMG_SIZE, FaceModel.__IMG_SIZE, 1), 0))
+        return self.__get_vals(y_pred[0])
+
+    def __get_vals(self, kps, threshold=17):
+        y_axis = kps[54:62:2].mean()
+        interactivity = abs(y_axis - (FaceModel.__IMG_SIZE / 2))
+
+        abs_l = np.abs(kps[0:16:2] - y_axis).mean()
+        abs_r = np.abs(kps[18:34:2] - y_axis).mean()
+
+        ln = abs(abs_l - abs_r)
+
+        return ln < threshold, interactivity
+
+    def __resize_w_pad(self, img, req_size):
+        original_shape = (img.shape[1], img.shape[0])
+
+        ratio = float(max(req_size))/max(original_shape)
+        new_size = [int(x*ratio) for x in original_shape]
+
+        img = cv2.resize(img, tuple(new_size))
+        delta_w, delta_h = req_size[0] - new_size[0], req_size[1] - new_size[1]
+        top, bottom = delta_h//2, delta_h-(delta_h//2)
+        left, right = delta_w//2, delta_w-(delta_w//2)
+
+        img = cv2.copyMakeBorder(img, top, bottom, left, right,
+                                 cv2.BORDER_CONSTANT, value=(0, 0, 0))
+        return img
+
+    def detect_face(self, uri):
         """Detect face and its facial features from frame
 
         Args:
             uri (str): base64 encoded frame
-
-        Returns:
-            _type_: _description_#####################################
         """
         frame = self.__decode_b64(uri)
-        gray_scale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces_rect = self.__face_cascade.detectMultiScale(
-            gray_scale, scaleFactor=scale_fac, minNeighbors=min_neighbours, minSize=min_size)
 
-        print(faces_rect)
+        (height, width) = frame.shape[:2]
+        blob = cv2.dnn.blobFromImage(cv2.resize(
+            frame, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0))
+        self.__face_dnn.setInput(blob)
 
-        # areas = [w*h for x, y, w, h in faces_rect]
-        # # only using detection with big box
-        # try:
-        #     large_rect = np.argmax(areas)
-        #     bbox = faces_rect[large_rect]
+        detections = self.__face_dnn.forward()
 
-        #     # extending and clipping bounding box a bit in order to create input for model
-        #     bbox[2] += bbox[0] + FaceModel.__EDGE_OFFSET
-        #     bbox[3] += bbox[1] + FaceModel.__EDGE_OFFSET
-        #     bbox[0] -= FaceModel.__EDGE_OFFSET
-        #     bbox[1] -= FaceModel.__EDGE_OFFSET
+        for i in range(0, detections.shape[2]):
 
-        #     X = np.clip(bbox[[0, 2]], 0, frame.shape[1])
-        #     Y = np.clip(bbox[[1, 3]], 0, frame.shape[0])
+            if detections[0, 0, i, 2] > 0.8:
 
-        #     # roi
-        #     input_frame = np.array(gray_scale[Y[0]: Y[1], X[0]: X[1]])
+                bbox = detections[0, 0, i, 3:7] * \
+                    np.array([width, height, width, height])
+                (start_x, start_y, end_x, end_y) = bbox.astype('int')
 
-        #     frame_h, frame_w = input_frame.shape[:2]
-        #     scale_h, scale_w = FaceModel.__IMG_SIZE / \
-        #         frame_h, FaceModel.__IMG_SIZE / frame_w
+                frame = np.array(frame[start_y: end_y, start_x: end_x])
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        #     # resize to 96x96
-        #     input_frame = cv2.resize(
-        #         input_frame, (FaceModel.__IMG_SIZE, FaceModel.__IMG_SIZE)).astype(np.uint8)
+                frame = self.__resize_w_pad(
+                    frame, (FaceModel.__IMG_SIZE, FaceModel.__IMG_SIZE)).astype(np.uint8)
 
-        #     # inference
-        #     # frame = draw_landmark(input_frame)
-        #     # print(model.predict(input_frame).shape)
-        #     return 'fine'
-        # except:
-        #     ##########################
-        #     person_not_facing = True
-        #     ##########################
-        #     return "not fine"
+                ln, interac = self.__extract_kps(frame)
+
+                self.__interactivity.append(interac)
+                self.__look += int(ln)
+                return
+
+        self.__inactive += 1
+
+    def get_vid_feedback(self):
+        return {
+            'visibility_score': (len(self.__interactivity)) / float(self.__inactive + len(self.__interactivity)),
+            'posture_score': self.__look / len(self.__interactivity),
+            'interactivity_score': sum(self.__interactivity) / len(self.__interactivity)
+        }

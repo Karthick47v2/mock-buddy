@@ -3,6 +3,8 @@
 from google.cloud import speech
 
 # pylint: disable=too-few-public-methods
+
+
 class GoogleSTT:
     """Class holding all STT operations"""
     SAMPLE_RATE = 16000
@@ -23,15 +25,13 @@ class GoogleSTT:
         self.__config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
             sample_rate_hertz=GoogleSTT.SAMPLE_RATE,
-            enable_automatic_punctuation=True,
-            language_code='en-US',
-            profanity_filter=False,
+            language_code='en-IN',
             use_enhanced=True,
             audio_channel_count=GoogleSTT.__NO_OF_CHANNELS,
             metadata=metadata,
         )
 
-    def transcribe(self, bucket_name, file_name):
+    def get_word_count(self, bucket_name, file_name):
         """Transcribe audio ________________________________________________________________"""
         audio = speech.RecognitionAudio(
             uri=(f"gs://{bucket_name}/" + file_name))
@@ -39,6 +39,13 @@ class GoogleSTT:
         res = self.__speech_client.long_running_recognize(
             config=self.__config, audio=audio)
         res = res.result(timeout=1200)
+        
+        words = 0
+
         for result in res.results:
             # 0 - high accurate output
+            words += len(result.alternatives[0].transcript.split())
             print(f"Transcript: {result.alternatives[0].transcript}")
+
+        print("Word count : ", words)
+        return words

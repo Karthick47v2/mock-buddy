@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { io } from "socket.io-client";
 import { ReactMic } from "react-mic";
@@ -18,7 +18,6 @@ export const VideoStream = ({ isRecord }) => {
   const webcamRef = useRef(null);
 
   const onRecStop = (blob) => {
-    console.log("sending audio");
     const formData = new FormData();
     let blobWithProp = new Blob([blob["blob"]], blob["options"]);
 
@@ -40,22 +39,51 @@ export const VideoStream = ({ isRecord }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    fetch("http://127.0.0.1:5000/vid_fb/")
+      .then(async (res) => {
+        const data = await res.json();
+        console.log(data);
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  useEffect(() => {
-    socket.on("get_output", (data) => {
-      console.log(data);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on("get_output", (data) => {
+  //     if (data["status"] == 400) {
+  //       visibility.push(1);
+  //       face.push(data["face"] == 1);
+  //       interactivity.push(data["face"] == 1 ? data["interactivity"] : 0);
+  //     } else {
+  //       visibility.push(0);
+  //     }
+  //   });
+  // }, [socket]);
 
   useEffect(() => {
-    console.log(isRecord);
     if (!isRecord) return;
-    console.log("working");
+
+    fetch("http://127.0.0.1:5000/init/")
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     const interval = setInterval(() => {
       const imgSrc = webcamRef.current.getScreenshot();
-      if (!imgSrc) return; 
+      if (!imgSrc) return;
       socket.emit("process_frame", imgSrc);
     }, 1000);
     return () => clearInterval(interval);

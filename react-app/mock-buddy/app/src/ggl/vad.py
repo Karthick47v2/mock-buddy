@@ -86,7 +86,7 @@ class VAD:
 
         voiced_frames = []
         for frame in frames:
-            is_speech = vad.is_speech(frame.bytes, sample_rate)
+            is_speech = vad.is_speech(frame.byte, sample_rate)
 
             if not triggered:
                 ring_buffer.append((frame, is_speech))
@@ -115,14 +115,14 @@ class VAD:
                 # audio we've collected.
                 if num_unvoiced > 0.9 * ring_buffer.maxlen:
                     triggered = False
-                    yield b''.join([frm.bytes for frm in voiced_frames])
+                    yield b''.join([frm.byte for frm in voiced_frames])
                     ring_buffer.clear()
                     voiced_frames = []
 
         # If we have any leftover voiced audio when we run out of input,
         # yield it.
         if voiced_frames:
-            yield b''.join([frm.bytes for frm in voiced_frames])
+            yield b''.join([frm.byte for frm in voiced_frames])
 
     def get_speech_time(self):
         """Calculate total voiced duration in input
