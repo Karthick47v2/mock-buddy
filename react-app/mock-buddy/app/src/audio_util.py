@@ -35,9 +35,6 @@ class AudioUtil:
 
         Args:
             file (FileStorage): wrapper for wav file
-
-        Returns:
-            float: total audio duration
         """
         file.save(self.__file_name)
 
