@@ -1,7 +1,9 @@
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export const Nav_Bar = () => {
+// navigation bar
+
+export const NavBar = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>

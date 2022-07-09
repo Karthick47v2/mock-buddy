@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import img from "../Images/home.svg";
 
+// home page
+
 export const Home = () => {
   return (
     <Container className="mt-5 mb-5 text-center text-secondary">
@@ -16,6 +18,7 @@ export const Home = () => {
           </h3>
         </Col>
       </Row>
+
       <Row>
         <h1 className="mt-5 mb-5"> About Mock-Buddy </h1>
       </Row>
@@ -34,6 +37,7 @@ export const Home = () => {
           </h5>
         </Col>
       </Row>
+
       <Row>
         <Col>
           <h5>

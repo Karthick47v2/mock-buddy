@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./css/main.min.css";
+import { Practice } from "./Pages/Practice";
+import { Home } from "./Pages/Home";
+import { Error } from "./Pages/Error";
+import { SharedLayout } from "./Pages/SharedLayout";
+import "./CSS/main.min.css";
 import "./index.css";
-import { Practice } from "./Pages/practice";
-import { Home } from "./Pages/home";
-import { Error } from "./Pages/error";
-import { SharedLayout } from "./Pages/shared_layout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

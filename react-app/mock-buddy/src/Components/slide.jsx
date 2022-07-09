@@ -1,6 +1,12 @@
 import ReactGoogleSlides from "react-google-slides";
 
+// google slide preview
+
 export const Slide = ({ link }) => {
+  /*
+    link(str): shared google slides link
+  */
+
   return (
     <ReactGoogleSlides
       width={1280}

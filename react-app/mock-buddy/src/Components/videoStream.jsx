@@ -1,23 +1,33 @@
-import { useRef, useEffect, useState } from "react";
-import Webcam from "react-webcam";
-import { io } from "socket.io-client";
+import { useRef, useEffect } from "react";
+import { Webcam } from "react-webcam";
 import { ReactMic } from "react-mic";
+import { io } from "socket.io-client";
 
+// stream AV
+
+// socket endpoint
 const ENDPOINT = "http://127.0.0.1:5000";
 const socket = io(ENDPOINT);
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 const videoConstraints = {
-  width: 640,
-  height: 480,
-  facingMode: "user", // front-facing - needed for mobile phones
-  frameRate: { ideal: 24, max: 30 },
+  width: 640, // preview width
+  height: 480, // preview heighy
+  facingMode: "user", // front-facing, explicitly defined for mobile devices
+  frameRate: { ideal: 24, max: 30 }, // get ideal frame rate if browser supports else get something lessthan max
 };
 
 export const VideoStream = ({ isRecord }) => {
+  /*
+  isRecord(bool): 'Record' button status
+  */
+
+  // reference for webcam
   const webcamRef = useRef(null);
 
+  // send recorded audio and request for audio & video feedback on record stop
   const onRecStop = (blob) => {
+    // send recorded audio wrapped in formdat as POST req
     const formData = new FormData();
     let blobWithProp = new Blob([blob["blob"]], blob["options"]);
 
@@ -27,6 +37,7 @@ export const VideoStream = ({ isRecord }) => {
       method: "POST",
       body: formData,
     };
+    // POST req - audio
     fetch("http://127.0.0.1:5000/audio_out/", postRequest)
       .then(async (res) => {
         const data = await res.json();
@@ -40,6 +51,7 @@ export const VideoStream = ({ isRecord }) => {
         console.log(err);
       });
 
+    // GET req - video
     fetch("http://127.0.0.1:5000/vid_fb/")
       .then(async (res) => {
         const data = await res.json();
@@ -54,21 +66,11 @@ export const VideoStream = ({ isRecord }) => {
       });
   };
 
-  // useEffect(() => {
-  //   socket.on("get_output", (data) => {
-  //     if (data["status"] == 400) {
-  //       visibility.push(1);
-  //       face.push(data["face"] == 1);
-  //       interactivity.push(data["face"] == 1 ? data["interactivity"] : 0);
-  //     } else {
-  //       visibility.push(0);
-  //     }
-  //   });
-  // }, [socket]);
-
+  // send frames to server in an interval when record button pressed
   useEffect(() => {
     if (!isRecord) return;
 
+    // GET req - reset required variables on start
     fetch("http://127.0.0.1:5000/init/")
       .then(async (res) => {
         const data = await res.json();
@@ -81,6 +83,7 @@ export const VideoStream = ({ isRecord }) => {
         console.log(err);
       });
 
+    // socket connection
     const interval = setInterval(() => {
       const imgSrc = webcamRef.current.getScreenshot();
       if (!imgSrc) return;

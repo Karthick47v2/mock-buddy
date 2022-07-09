@@ -1,10 +1,12 @@
-import { Nav_Bar } from "../Components/nav_bar";
+import { NavBar } from "../Components/navBar";
 import { Outlet } from "react-router";
+
+// shared navigation bar for whole site
 
 export const SharedLayout = () => {
   return (
     <>
-      <Nav_Bar />
+      <NavBar />
       <Outlet />
     </>
   );
