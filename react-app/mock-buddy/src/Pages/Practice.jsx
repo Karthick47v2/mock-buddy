@@ -2,18 +2,28 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Button, Container, Nav } from "react-bootstrap";
 import { VideoStream } from "../Components/videoStream";
 import { Slide } from "../Components/slide";
-import { getNetSpeed } from "../Components/netspeedChecker";
+import { getNetSpeed } from "../Components/bandwidthCheck";
 
 // Practice page
 
 export const Practice = () => {
-  // record status
+  /**
+   * @type {[Boolean, Function]} IsRecord
+   */
   const [isRecord, setIsRecord] = useState(false);
-  // bandwidth quality
+  /**
+   * @type {[Boolean, Function]} IsGoodBandwidth
+   */
   const [isGoodBandwidth, setIsGoodBandwidth] = useState(false);
-  // media usage permission response
+  /**
+   * @type {[Boolean, Function]} IsAccepted
+   */
   const [isAccepted, setIsAccepted] = useState(false);
 
+  /**
+   * Good bandwidth threshold for Video streaming
+   * @type {number}
+   */
   const goodBandwidthLimit = 1024;
 
   useEffect(() => {

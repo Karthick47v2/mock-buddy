@@ -3,6 +3,9 @@ import OffCanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
 
 export const Off_Canvas = () => {
+  /**
+   * @type {[Boolean, Function]} Show
+   */
   const [show, setShow] = useState(false);
 
   return (

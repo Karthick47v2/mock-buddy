@@ -5,23 +5,36 @@ import { io } from "socket.io-client";
 
 // stream AV
 
-// socket endpoint
+/**
+ * Socket endpoint address
+ * @type {string}
+ */
 const ENDPOINT = "http://127.0.0.1:5000";
+
+/**
+ * websocket
+ * @type {Socket}
+ */
 const socket = io(ENDPOINT);
 
-// https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+/**
+ * Video preview constraints
+ * @type {{width: number, height: number, facingMode: string, frameRate: {idea: number, max: number}}}
+ * @see <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"> getUserMedia </a>
+ */
 const videoConstraints = {
-  width: 640, // preview width
-  height: 480, // preview heighy
-  facingMode: "user", // front-facing, explicitly defined for mobile devices
-  frameRate: { ideal: 24, max: 30 }, // get ideal frame rate if browser supports else get something lessthan max
+  width: 640,
+  height: 480,
+  facingMode: "user",
+  frameRate: { ideal: 24, max: 30 },
 };
 
+/**
+ * AV stream component
+ * @param {Boolean} isRecord - recording status
+ * @returns {React.ReactElement}
+ */
 export const VideoStream = ({ isRecord }) => {
-  /*
-  isRecord(bool): 'Record' button status
-  */
-
   // reference for webcam
   const webcamRef = useRef(null);
 
