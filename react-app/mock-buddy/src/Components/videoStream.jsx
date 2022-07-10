@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { Webcam } from "react-webcam";
+import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
 
@@ -115,6 +115,7 @@ export const VideoStream = (props) => {
         screenshotFormat={"image/jpeg"}
         ref={webcamRef}
       />
+
       <div style={{ display: "none" }}>
         <ReactMic
           record={props.isRecord}

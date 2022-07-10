@@ -19,6 +19,10 @@ export const Practice = () => {
    * @type {[Boolean, Function]} IsAccepted
    */
   const [isAccepted, setIsAccepted] = useState(false);
+  /**
+   * @type {[Boolean, Function]} ShowModal
+   */
+  const [showModal, setShowModal] = useState(true);
 
   /**
    * Good bandwidth threshold for Video streaming
@@ -69,10 +73,10 @@ export const Practice = () => {
                   <Nav.Link href="#speech">Speech Mode</Nav.Link>
                 </Nav>
               </Card.Header>
-              {/* <VideoStream isRecord={isRecord} /> */}
-              <Slide />
+              <VideoStream isRecord={isRecord} />
+              {/* <Slide showModal={showModal} handleShowModal={setShowModal} /> */}
               <Card.Body>
-                <Card.Title>Video Stream</Card.Title>
+                <Card.Title className="mt-5">Video Stream</Card.Title>
                 <Card.Text>
                   Bandwidth CHECK BY SOCKET BANDWIDTH : "Bad"
                 </Card.Text>
@@ -80,8 +84,17 @@ export const Practice = () => {
                   variant="danger"
                   disabled={!isAccepted || isRecord}
                   onClick={() => setIsRecord(true)}
+                  className="me-3"
                 >
                   Record
+                </Button>
+                <Button
+                  variant="warning"
+                  disabled={!isAccepted || isRecord || showModal}
+                  onClick={() => setShowModal(true)}
+                  className="me-3"
+                >
+                  Change slides
                 </Button>
                 <Button
                   variant="success"
