@@ -1,0 +1,14 @@
+body {
+  background-color: #202124;
+}
+
+.modal-content {
+  margin: auto 20px;
+  background-color: #3c4043;
+}
+
+.modal-backdrop {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 40px);
+}
