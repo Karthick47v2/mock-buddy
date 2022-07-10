@@ -6,7 +6,7 @@ import { Home } from "./Pages/Home";
 import { Error } from "./Pages/Error";
 import { SharedLayout } from "./Pages/SharedLayout";
 import "./CSS/main.min.css";
-import "./index.css";
+import "./CSS/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
