@@ -24,7 +24,7 @@ export const Practice = () => {
    * Good bandwidth threshold for Video streaming
    * @type {number}
    */
-  const goodBandwidthLimit = 1024;
+  const goodBandwidthLimit = 1536;
 
   useEffect(() => {
     const netInterval = setInterval(() => {
@@ -33,18 +33,18 @@ export const Practice = () => {
     return () => clearInterval(netInterval);
   }, []);
 
-  // ask for permission on start
-  useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true, video: true })
-      .then(() => {
-        setIsAccepted(true);
-      })
-      .catch(() => {
-        setIsAccepted(false);
-        console.log("Not"); //////////////////////////////////////////// UI
-      });
-  }, []);
+  // // ask for permission on start
+  // useEffect(() => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ audio: true, video: true })
+  //     .then(() => {
+  //       setIsAccepted(true);
+  //     })
+  //     .catch(() => {
+  //       setIsAccepted(false);
+  //       console.log("Not"); //////////////////////////////////////////// UI
+  //     });
+  // }, []);
 
   return (
     <div>
@@ -62,20 +62,19 @@ export const Practice = () => {
               <Card.Header>
                 <Nav
                   variant="pills"
-                  defaultActiveKey="#first"
+                  defaultActiveKey="#presentation"
                   className="justify-content-center"
                 >
-                  <Nav.Link href="#first">Presentation Mode</Nav.Link>
-                  <Nav.Link href="#second">Speech Mode</Nav.Link>
-                  <Nav.Link href="#third">Audio only</Nav.Link>
+                  <Nav.Link href="#presentation">Presentation Mode</Nav.Link>
+                  <Nav.Link href="#speech">Speech Mode</Nav.Link>
                 </Nav>
               </Card.Header>
-              <VideoStream isRecord={isRecord} />
+              {/* <VideoStream isRecord={isRecord} /> */}
               <Slide />
               <Card.Body>
                 <Card.Title>Video Stream</Card.Title>
                 <Card.Text>
-                  Bandwidth : {isGoodBandwidth ? "Good" : "Bad"}
+                  Bandwidth CHECK BY SOCKET BANDWIDTH : "Bad"
                 </Card.Text>
                 <Button
                   variant="danger"

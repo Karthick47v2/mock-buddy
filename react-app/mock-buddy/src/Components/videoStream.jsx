@@ -13,7 +13,7 @@ const ENDPOINT = "http://127.0.0.1:5000";
 
 /**
  * websocket
- * @type {Socket}
+ * @type {socket}
  */
 const socket = io(ENDPOINT);
 
@@ -30,11 +30,12 @@ const videoConstraints = {
 };
 
 /**
- * AV stream component
- * @param {Boolean} isRecord - recording status
- * @returns {React.ReactElement}
+ * JSX component for AV stream
+ * @param {Object} props - component props
+ * @param {Boolean} props.isRecord - recording status
+ * @returns {JSX.Element} - popup modal
  */
-export const VideoStream = ({ isRecord }) => {
+export const VideoStream = (props) => {
   // reference for webcam
   const webcamRef = useRef(null);
 
@@ -81,7 +82,7 @@ export const VideoStream = ({ isRecord }) => {
 
   // send frames to server in an interval when record button pressed
   useEffect(() => {
-    if (!isRecord) return;
+    if (!props.isRecord) return;
 
     // GET req - reset required variables on start
     fetch("http://127.0.0.1:5000/init/")
@@ -103,7 +104,7 @@ export const VideoStream = ({ isRecord }) => {
       socket.emit("process_frame", imgSrc);
     }, 1000);
     return () => clearInterval(interval);
-  }, [isRecord]);
+  }, [props.isRecord]);
 
   return (
     <>
@@ -116,7 +117,7 @@ export const VideoStream = ({ isRecord }) => {
       />
       <div style={{ display: "none" }}>
         <ReactMic
-          record={isRecord}
+          record={props.isRecord}
           onStop={onRecStop}
           mimeType="audio/wav"
           channelCount={1}
