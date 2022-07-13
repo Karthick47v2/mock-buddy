@@ -32,7 +32,15 @@ class GoogleSTT:
         )
 
     def get_word_count(self, bucket_name, file_name):
-        """Transcribe audio ________________________________________________________________"""
+        """ Calculate word count from transcript
+
+        Args:
+            bucket_name (str): Google Cloud bucket name
+            file_name (str): audio file name
+
+        Returns:
+            int: number of words in transcript
+        """
         audio = speech.RecognitionAudio(
             uri=(f"gs://{bucket_name}/" + file_name))
 
@@ -44,7 +52,6 @@ class GoogleSTT:
         for result in res.results:
             # 0 - high accurate output
             words += len(result.alternatives[0].transcript.split())
-            print(f"Transcript: {result.alternatives[0].transcript}")
+            # print(f"Transcript: {result.alternatives[0].transcript}")
 
-        print("Word count : ", words)
         return words
