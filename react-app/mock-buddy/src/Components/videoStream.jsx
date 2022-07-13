@@ -88,6 +88,7 @@ export const VideoStream = (props) => {
       props.handleImgSrc(webcamRef.current.getScreenshot());
     }, 100);
     return () => clearInterval(previewInterval);
+    // eslint-disable-next-line
   }, [props.isRecord]);
 
   // send frames to server in an interval when record button pressed
@@ -113,6 +114,7 @@ export const VideoStream = (props) => {
       socket.emit("process_frame", props.imageSrc);
     }, 1000);
     return () => clearInterval(socketInterval);
+    // eslint-disable-next-line
   }, [props.isRecord]);
 
   return (
