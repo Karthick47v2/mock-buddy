@@ -24,7 +24,7 @@
     "eject": "react-scripts eject",
     "doc": "jsdoc -c jsdoc.json"
   },
-   "overrides": {
+  "overrides": {
     "autoprefixer": "10.4.5"
   },
   "eslintConfig": {
@@ -44,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1"
   }
 }
