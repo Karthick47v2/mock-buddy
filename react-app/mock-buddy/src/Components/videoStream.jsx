@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
@@ -23,8 +23,8 @@ const socket = io(ENDPOINT);
  * @see <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"> getUserMedia </a>
  */
 const videoConstraints = {
-  width: 640,
-  height: 480,
+  width: 800,
+  height: 600,
   facingMode: "user",
   frameRate: { ideal: 24, max: 30 },
 };
@@ -33,6 +33,8 @@ const videoConstraints = {
  * JSX component for AV stream
  * @param {Object} props - component props
  * @param {Boolean} props.isRecord - recording status
+ * @param {String} props.imageSrc - webcam screenshot on Base64 format
+ * @param {(imgSrc: String) => void} props.handleImgSrc - set imgSrc
  * @returns {JSX.Element} - popup modal
  */
 export const VideoStream = (props) => {
@@ -80,6 +82,14 @@ export const VideoStream = (props) => {
       });
   };
 
+  // webcam preview
+  useEffect(() => {
+    const previewInterval = setInterval(() => {
+      props.handleImgSrc(webcamRef.current.getScreenshot());
+    }, 100);
+    return () => clearInterval(previewInterval);
+  }, [props.isRecord]);
+
   // send frames to server in an interval when record button pressed
   useEffect(() => {
     if (!props.isRecord) return;
@@ -98,12 +108,11 @@ export const VideoStream = (props) => {
       });
 
     // socket connection
-    const interval = setInterval(() => {
-      const imgSrc = webcamRef.current.getScreenshot();
-      if (!imgSrc) return;
-      socket.emit("process_frame", imgSrc);
+    const socketInterval = setInterval(() => {
+      if (!props.imageSrc) return;
+      socket.emit("process_frame", props.imageSrc);
     }, 1000);
-    return () => clearInterval(interval);
+    return () => clearInterval(socketInterval);
   }, [props.isRecord]);
 
   return (
@@ -115,7 +124,6 @@ export const VideoStream = (props) => {
         screenshotFormat={"image/jpeg"}
         ref={webcamRef}
       />
-
       <div style={{ display: "none" }}>
         <ReactMic
           record={props.isRecord}
