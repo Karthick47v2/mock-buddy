@@ -27,9 +27,7 @@ jobs:
           pip install pylint pytest pytest-cov
           pip install -r requirements.txt
       - name: Analyze
-        run: |
-          pylint src/face_model.py --extension-pkg-whitelist=cv2
-          pylint $(git ls-files '*.py')
+        run: pylint $(git ls-files '*.py')
       # - name: Test
       #   run: |
       #     python -m pytest --cov=./ --cov-report=xml
