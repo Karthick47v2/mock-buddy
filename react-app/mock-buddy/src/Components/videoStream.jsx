@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
+import { req } from "./req";
 
 // stream AV
 
@@ -54,32 +55,10 @@ export const VideoStream = (props) => {
       body: formData,
     };
     // POST req - audio
-    fetch("http://127.0.0.1:5000/audio_out/", postRequest)
-      .then(async (res) => {
-        const data = await res.json();
-        console.log(data);
-        if (!res.ok) {
-          const err = (data && data.message) || res.status;
-          return Promise.reject(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    req("http://127.0.0.1:5000/audio_out/", postRequest);
 
     // GET req - video
-    fetch("http://127.0.0.1:5000/vid_fb/")
-      .then(async (res) => {
-        const data = await res.json();
-        console.log(data);
-        if (!res.ok) {
-          const err = (data && data.message) || res.status;
-          return Promise.reject(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    req("http://127.0.0.1:5000/vid_fb/", { method: "GET" });
   };
 
   // webcam preview
@@ -96,17 +75,7 @@ export const VideoStream = (props) => {
     if (!props.isRecord) return;
 
     // GET req - reset required variables on start
-    fetch("http://127.0.0.1:5000/init/")
-      .then(async (res) => {
-        const data = await res.json();
-        if (!res.ok) {
-          const err = (data && data.message) || res.status;
-          return Promise.reject(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    req("http://127.0.0.1:5000/init/", { method: "GET" });
 
     // socket connection
     const socketInterval = setInterval(() => {
