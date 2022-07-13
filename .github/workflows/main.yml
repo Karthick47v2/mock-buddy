@@ -39,11 +39,29 @@ jobs:
       #     flags: unittests
       #     verbose: true
 
+  react_test:
+    runs_on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    defaults:
+      run:
+        working-directory: ./react-app/mock-buddy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install --force
+      - name: Analyze
+        run: eslint . --ext .js, .jsx
+      # - name: Test
+
   deploy_gh_pages:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
+    needs: react_test
     if: "contains(github.event.head_commit.message, 'deploy to gh')"
     defaults:
       run:
