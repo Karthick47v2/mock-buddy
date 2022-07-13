@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.92c2e36a.css",
-    "main.js": "/static/js/main.8df0d7c6.js",
-    "static/media/home.svg": "/static/media/home.b8ace88a3fc9a009d6b17cd20e27ccd2.svg",
-    "index.html": "/index.html",
-    "main.92c2e36a.css.map": "/static/css/main.92c2e36a.css.map",
-    "main.8df0d7c6.js.map": "/static/js/main.8df0d7c6.js.map"
+    "main.css": "/mock-buddy/static/css/main.92c2e36a.css",
+    "main.js": "/mock-buddy/static/js/main.33f8360b.js",
+    "static/media/home.svg": "/mock-buddy/static/media/home.b8ace88a3fc9a009d6b17cd20e27ccd2.svg",
+    "index.html": "/mock-buddy/index.html",
+    "main.92c2e36a.css.map": "/mock-buddy/static/css/main.92c2e36a.css.map",
+    "main.33f8360b.js.map": "/mock-buddy/static/js/main.33f8360b.js.map"
   },
   "entrypoints": [
     "static/css/main.92c2e36a.css",
-    "static/js/main.8df0d7c6.js"
+    "static/js/main.33f8360b.js"
   ]
 }
