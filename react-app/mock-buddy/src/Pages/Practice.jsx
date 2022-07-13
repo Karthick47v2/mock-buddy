@@ -11,7 +11,8 @@ import {
 } from "react-bootstrap";
 import { VideoStream } from "../Components/videoStream";
 import { Slide } from "../Components/slide";
-import { getNetSpeed } from "../Components/bandwidthCheck";
+import { PermissionRejectAlert } from "../Components/permissionRAlert";
+import { Timer } from "../Components/timer";
 
 // Practice page
 
@@ -21,13 +22,9 @@ export const Practice = () => {
    */
   const [isRecord, setIsRecord] = useState(false);
   /**
-   * @type {[Boolean, Function]} IsGoodBandwidth
+   * @type {[String, Function]} PermissionStatus
    */
-  const [isGoodBandwidth, setIsGoodBandwidth] = useState(false);
-  /**
-   * @type {[Boolean, Function]} IsAccepted
-   */
-  const [isAccepted, setIsAccepted] = useState(false);
+  const [permissionStatus, setPermissionStatus] = useState(null);
   /**
    * @type {[Boolean, Function]} ShowModal
    */
@@ -41,35 +38,22 @@ export const Practice = () => {
    */
   const [camPreview, setCamPreview] = useState(false);
 
-  /**
-   * Good bandwidth threshold for Video streaming
-   * @type {number}
-   */
-  const goodBandwidthLimit = 1536;
-
-  useEffect(() => {
-    const netInterval = setInterval(() => {
-      setIsGoodBandwidth(getNetSpeed(goodBandwidthLimit));
-    }, 5000);
-    return () => clearInterval(netInterval);
-  }, []);
-
   // ask for permission on start
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: true })
       .then(() => {
-        setIsAccepted(true);
+        setPermissionStatus("Accepted");
       })
       .catch(() => {
-        setIsAccepted(false);
-        console.log("Not"); //////////////////////////////////////////// UI
+        setPermissionStatus("Rejected");
       });
   }, []);
 
   return (
     <div>
       <Container>
+        {permissionStatus === "Rejected" && <PermissionRejectAlert />}
         <Row>
           <Col></Col>
           <Col>
@@ -116,13 +100,12 @@ export const Practice = () => {
               )}
               <Card.Body>
                 <Card.Title className="mt-5">Video Stream</Card.Title>
-                <Card.Text>
-                  Bandwidth CHECK BY SOCKET BANDWIDTH : "Bad"
-                </Card.Text>
                 <div className="mb-3 d-flex justify-content-center">
                   <Button
                     variant="warning"
-                    disabled={!isAccepted || isRecord || showModal}
+                    disabled={
+                      permissionStatus === "Rejected" || isRecord || showModal
+                    }
                     onClick={() => setShowModal(true)}
                     className="me-3"
                   >
@@ -134,7 +117,7 @@ export const Practice = () => {
                       type="checkbox"
                       checked={camPreview}
                       variant="outline-secondary"
-                      disabled={!isAccepted || isRecord}
+                      disabled={permissionStatus === "Rejected" || isRecord}
                       onChange={(e) => setCamPreview(e.currentTarget.checked)}
                       value="1"
                       className="ms-3"
@@ -146,7 +129,7 @@ export const Practice = () => {
                 <div className="d-flex justify-content-center">
                   <Button
                     variant="danger"
-                    disabled={!isAccepted || isRecord}
+                    disabled={permissionStatus === "Rejected" || isRecord}
                     onClick={() => setIsRecord(true)}
                     className="me-3"
                   >
@@ -162,7 +145,9 @@ export const Practice = () => {
                   </Button>
                 </div>
               </Card.Body>
-              <Card.Footer>Print time</Card.Footer>
+              <Card.Footer>
+                <Timer isActive={isRecord} />
+              </Card.Footer>
             </Card>
           </Col>
           <Col></Col>
