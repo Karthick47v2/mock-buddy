@@ -40,7 +40,7 @@ jobs:
       #     verbose: true
 
   react_test:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
