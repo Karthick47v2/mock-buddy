@@ -6,7 +6,6 @@ import wave
 import webrtcvad
 
 # pylint: disable=too-few-public-methods
-# pylint: disable=no-self-use
 
 
 class Frame():

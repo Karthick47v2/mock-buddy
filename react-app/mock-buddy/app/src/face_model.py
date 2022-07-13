@@ -1,10 +1,10 @@
 """face and facial features detection"""
 
-# pylint: disable=E0611
-
 import base64
 import numpy as np
+# pylint: disable=I1101
 from cv2 import cv2
+# pylint: disable=E0401
 from tensorflow import keras
 
 

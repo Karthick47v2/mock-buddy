@@ -3,7 +3,7 @@
 import os
 import datetime
 from flask import Flask, request
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 from flask_cors import CORS
 
 from src.face_model import FaceModel
@@ -82,7 +82,9 @@ def get_audio():
             'status': 200,
             'wpm': speech_rate
         }
-    except:
+    # pylint: disable=broad-except
+    except Exception as exp:
+        print(exp)
         return{
             'status': 400
         }

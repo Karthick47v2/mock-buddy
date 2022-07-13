@@ -39,7 +39,6 @@ class GoogleSTT:
         res = self.__speech_client.long_running_recognize(
             config=self.__config, audio=audio)
         res = res.result(timeout=1200)
-        
         words = 0
 
         for result in res.results:

@@ -49,6 +49,11 @@ class AudioUtil:
         sf.write(self.__file_name, file, s_rate, subtype='PCM_16')
 
     def get_speech_rate(self):
+        """ Return speech rate in wpm (words per minute)
+
+        Returns:
+            float: speech rate in wpm
+        """
         word_count = self.stt.get_word_count(
             self.storage.bucket_name, self.file_name)
         vad_time = VAD(self.file_name).get_speech_time() + \
@@ -56,4 +61,4 @@ class AudioUtil:
 
         print(f"vad time: {vad_time}")
 
-        return (word_count * 60 / vad_time)
+        return word_count * 60 / vad_time
