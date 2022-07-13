@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { Practice } from "./Pages/Practice";
 import { Home } from "./Pages/Home";
 import { Error } from "./Pages/Error";
@@ -11,7 +11,7 @@ import "./CSS/index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<Home />} />
@@ -19,6 +19,6 @@ root.render(
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
