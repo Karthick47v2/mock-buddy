@@ -65,11 +65,7 @@ export const ModalPopup = forwardRef((props, ref) => {
           formError={error}
         />
       </Modal.Body>
-      <Modal.Footer className="d-flex justify-content-center align-items-center">
-        {/* <Button variant="primary" onClick={handleClose}>
-          Continue
-        </Button> */}
-      </Modal.Footer>
+      <Modal.Footer />
     </Modal>
   );
 });

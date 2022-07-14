@@ -16,8 +16,7 @@ export const Slide = (props) => {
   const [gLink, setGLink] = useState(
     "https://docs.google.com/presentation/d/1Dpv-1o9F3g6fZtwiel9boE8Vd1u_GJIpHEU6sO6OTR8/edit?usp=sharing"
   );
-  //https://docs.google.com/presentation/d/1hgNONfulGjvvCqmDIgv-x6AwdmFtGGGQkAxOlmfShvY/edit?usp=sharing
-
+  //sample - https://docs.google.com/presentation/d/1hgNONfulGjvvCqmDIgv-x6AwdmFtGGGQkAxOlmfShvY/edit?usp=sharing
   /**
    * @type {[Boolean, Function]} Show
    */

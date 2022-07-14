@@ -1,8 +1,8 @@
 import { Alert } from "react-bootstrap";
 
-export const PermissionRejectAlert = () => {
+export const PermissionAlert = () => {
   return (
-    <Alert variant="danger" onClose={() => console.log("Refresh")}>
+    <Alert variant="danger">
       <Alert.Heading> Permission denied!</Alert.Heading>
       <p>
         Mock buddy requires both Audio and Video permission in order to evaluate

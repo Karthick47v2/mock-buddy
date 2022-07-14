@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Row,
   Col,
   Button,
   ToggleButton,
-  Container,
-  Nav,
   ToggleButtonGroup,
+  Container,
 } from "react-bootstrap";
 import { VideoStream } from "../Components/videoStream";
 import { Slide } from "../Components/slide";
-import { PermissionRejectAlert } from "../Components/permissionRAlert";
+import { PermissionAlert } from "../Components/permissionAlert";
 import { Timer } from "../Components/timer";
-
-// Practice page
 
 export const Practice = () => {
   /**
@@ -37,6 +34,10 @@ export const Practice = () => {
    * @type {[Boolean, Function]} CamPreview
    */
   const [camPreview, setCamPreview] = useState(false);
+  /**
+   * @type {[Boolean, Function]} Mode
+   */
+  const [mode, setMode] = useState(true);
 
   // ask for permission on start
   useEffect(() => {
@@ -51,55 +52,79 @@ export const Practice = () => {
   }, []);
 
   return (
-    <div>
-      <Container>
-        {permissionStatus === "Rejected" && <PermissionRejectAlert />}
-        <Row>
-          <Col></Col>
-          <Col>
-            <Card
-              className="text-center"
-              bg="dark"
-              text="white"
-              key="Dark"
-              border="dark"
-            >
-              <Card.Header>
-                <Nav
-                  variant="pills"
-                  defaultActiveKey="#presentation"
-                  className="justify-content-center"
-                >
-                  <Nav.Link href="#presentation">Presentation Mode</Nav.Link>
-                  <Nav.Link href="#speech">Speech Mode</Nav.Link>
-                </Nav>
-              </Card.Header>
-              <Slide showModal={showModal} handleShowModal={setShowModal} />
-              <div
-                style={{ position: "absolute", zIndex: "-1", margin: "125px" }}
+    <Container>
+      {permissionStatus === "Rejected" && <PermissionAlert />}
+      <Row>
+        <Col></Col>
+        <Col>
+          <Card
+            className="my-3 p-5 text-center"
+            bg="dark"
+            text="white"
+            border="secondary"
+          >
+            <Card.Header>
+              <ToggleButtonGroup
+                size="lg"
+                name="radio-btn"
+                type="radio"
+                className="mt-3"
               >
-                <VideoStream
-                  isRecord={isRecord}
-                  imageSrc={imgSrc}
-                  handleImgSrc={setImgSrc}
-                />
-              </div>
-              {camPreview && imgSrc && (
-                <img
-                  alt="cam preview"
-                  src={imgSrc}
-                  style={{
-                    height: "180px",
-                    width: "240px",
-                    position: "absolute",
-                    zIndex: "1",
-                    marginLeft: "25px",
-                    marginTop: "135px",
-                  }}
-                />
-              )}
-              <Card.Body>
-                <Card.Title className="mt-5">Video Stream</Card.Title>
+                <ToggleButton
+                  id="presentation"
+                  type="radio"
+                  variant="outline-success"
+                  value="1"
+                  checked={mode}
+                  onChange={(e) => setMode(e.currentTarget.value === "1")}
+                >
+                  Presentation Mode
+                </ToggleButton>
+                <ToggleButton
+                  id="speech"
+                  type="radio"
+                  variant="outline-danger"
+                  value="0"
+                  checked={!mode}
+                  onChange={(e) => setMode(e.currentTarget.value === "1")}
+                >
+                  Speech Mode
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Card.Header>
+            {mode && (
+              <Slide showModal={showModal} handleShowModal={setShowModal} />
+            )}
+            <div
+              style={
+                mode
+                  ? { position: "absolute", zIndex: "-1", margin: "125px" }
+                  : {}
+              }
+            >
+              <VideoStream
+                isRecord={isRecord}
+                imageSrc={imgSrc}
+                handleImgSrc={setImgSrc}
+              />
+            </div>
+            {mode && camPreview && imgSrc && (
+              <img
+                alt="cam preview"
+                src={imgSrc}
+                style={{
+                  height: "180px",
+                  width: "240px",
+                  position: "absolute",
+                  zIndex: "1",
+                  marginLeft: "25px",
+                  marginTop: "135px",
+                }}
+              />
+            )}
+            <Card.Body>
+              {/* <Card.Title className="mt-5">Video Stream</Card.Title> */}
+              {mode && (
                 <div className="mb-3 d-flex justify-content-center">
                   <Button
                     variant="warning"
@@ -126,33 +151,34 @@ export const Practice = () => {
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </div>
-                <div className="d-flex justify-content-center">
-                  <Button
-                    variant="danger"
-                    disabled={permissionStatus === "Rejected" || isRecord}
-                    onClick={() => setIsRecord(true)}
-                    className="me-3"
-                  >
-                    Record
-                  </Button>
-                  <Button
-                    variant="success"
-                    disabled={!isRecord}
-                    onClick={() => setIsRecord(false)}
-                    className="ms-3"
-                  >
-                    Finish
-                  </Button>
-                </div>
-              </Card.Body>
-              <Card.Footer>
-                <Timer isActive={isRecord} />
-              </Card.Footer>
-            </Card>
-          </Col>
-          <Col></Col>
-        </Row>
-      </Container>
-    </div>
+              )}
+              <div className="d-flex justify-content-center">
+                <Button
+                  variant="danger"
+                  disabled={permissionStatus === "Rejected" || isRecord}
+                  onClick={() => setIsRecord(true)}
+                  className="me-3"
+                >
+                  Record
+                </Button>
+                <Button
+                  variant="success"
+                  disabled={!isRecord}
+                  onClick={() => setIsRecord(false)}
+                  className="ms-3"
+                >
+                  Finish
+                </Button>
+              </div>
+            </Card.Body>
+            <Card.Footer>
+              <h5> Time </h5>
+              <Timer isActive={isRecord} />
+            </Card.Footer>
+          </Card>
+        </Col>
+        <Col></Col>
+      </Row>
+    </Container>
   );
 };

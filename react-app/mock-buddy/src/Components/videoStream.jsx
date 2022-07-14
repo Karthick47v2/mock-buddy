@@ -4,8 +4,6 @@ import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
 import { req } from "./req";
 
-// stream AV
-
 /**
  * Socket endpoint address
  * @type {string}

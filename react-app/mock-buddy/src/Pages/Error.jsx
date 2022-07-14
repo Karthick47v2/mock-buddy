@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 
-// error page
-
 export const Error = () => {
   return (
     <div className="text-center text-secondary">

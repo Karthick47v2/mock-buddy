@@ -1,10 +1,21 @@
-import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
-import img from "../Images/home.svg";
-
-// home page
+import img from "../Images/home page/home.svg";
 
 export const Home = () => {
+  const abtTxt = [
+    {
+      col1: `Public speaking and/or giving presentations are crucial moments in
+            one's career. Too often fear takes over our performance.`,
+      col2: `Spend 10 minutes everyday to enchance your vocal ability. Practice
+            in private without any embarrassment.`,
+    },
+    {
+      col1: `Mock-Buddy is built on the premise that practice & preparation are
+            crucial to get over your anxieties when doing presentation.`,
+      col2: `Get in-depth analysis of your speech style and tips to help you
+            improve areas where you may have weaknesses.`,
+    },
+  ];
   return (
     <Container className="mt-5 mb-5 text-center text-secondary">
       <Row>
@@ -18,40 +29,19 @@ export const Home = () => {
           </h3>
         </Col>
       </Row>
-
       <Row>
         <h1 className="mt-5 mb-5"> About Mock-Buddy </h1>
       </Row>
-
-      <Row className="mb-5">
-        <Col>
-          <h5>
-            Public speaking and/or giving presentations are crucial moments in
-            one's career. Too often fear takes over our performance.
-          </h5>
-        </Col>
-        <Col>
-          <h5>
-            Spend 10 minutes everyday to enchance your vocal ability. Practice
-            in private without any embarrassment
-          </h5>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          <h5>
-            Mock-Buddy is built on the premise that practice & preparation are
-            crucial to get over your anxieties when doing presentation
-          </h5>
-        </Col>
-        <Col>
-          <h5>
-            Get in-depth analysis of your speech style and tips to help you
-            improve areas where you may have weaknesses.
-          </h5>
-        </Col>
-      </Row>
+      {abtTxt.map((abt) => (
+        <Row className="mb-5">
+          <Col>
+            <h5>{abt.col1}</h5>
+          </Col>
+          <Col>
+            <h5>{abt.col2}</h5>
+          </Col>
+        </Row>
+      ))}
     </Container>
   );
 };
