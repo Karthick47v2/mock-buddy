@@ -8,35 +8,24 @@ import { useEffect, useState } from "react";
  */
 export const Timer = (props) => {
   /**
-   * @type {[Object, Function]} Time({Seconds, Minute, Counter})
+   * @type {[number, Function]} Counter
    */
-  const [time, setTime] = useState({
-    sec: "00",
-    min: "00",
-    counter: 0,
-  });
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     let intervalId;
-
     if (props.isActive) {
       intervalId = setInterval(() => {
-        const secCounter = time.counter % 60;
-        const minCounter = Math.floor(time.counter / 60);
-
-        setTime((prevState) => ({
-          sec: String(secCounter).padStart(2, "0"),
-          min: String(minCounter).padStart(2, "0"),
-          counter: prevState.counter + 1,
-        }));
+        setCounter((prev) => prev + 1);
       }, 1000);
     }
     return () => clearInterval(intervalId);
-  }, [props.isActive, time.counter]);
+  }, [props.isActive, counter]);
 
   return (
     <h2>
-      {time.min} : {time.sec}
+      {String(Math.floor(counter / 60)).padStart(2, "0")} :{" "}
+      {String(counter % 60).padStart(2, "0")}
     </h2>
   );
 };
