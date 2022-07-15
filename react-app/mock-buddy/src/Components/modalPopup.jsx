@@ -47,9 +47,11 @@ export const ModalPopup = forwardRef((props, ref) => {
       onHide={props.handleClose}
       centered
       backdrop="static"
+      keyboard={false}
       container={ref}
       style={{ position: "absolute", backgroundColor: "black" }}
       className="text-light"
+      data-testid="insert-link"
     >
       <Modal.Header className="d-flex justify-content-center align-items-center">
         <Modal.Title>Paste Google slide link</Modal.Title>

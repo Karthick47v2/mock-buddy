@@ -10,7 +10,7 @@ import { Button, Form, FloatingLabel } from "react-bootstrap";
  */
 export const SlideInput = (props) => {
   return (
-    <Form noValidate onSubmit={props.onFormSubmit}>
+    <Form noValidate onSubmit={props.onFormSubmit} data-testid="slide-input">
       <Form.Group className="mb-3">
         <FloatingLabel
           controlId="glink"

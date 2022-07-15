@@ -123,7 +123,6 @@ export const Practice = () => {
               />
             )}
             <Card.Body>
-              {/* <Card.Title className="mt-5">Video Stream</Card.Title> */}
               {mode && (
                 <div className="mb-3 d-flex justify-content-center">
                   <Button
