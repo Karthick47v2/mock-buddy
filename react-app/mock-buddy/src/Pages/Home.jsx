@@ -1,5 +1,5 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
-import img from "../Images/home page/home.svg";
+import img from "../Images/home-page/home.svg";
 
 export const Home = () => {
   const abtTxt = [
@@ -22,6 +22,7 @@ export const Home = () => {
         <Col xs={6}>
           <Image src={img} fluid={true} />
         </Col>
+
         <Col className="d-flex align-items-center">
           <h3>
             Mock-Buddy is an AI powered web application for practicing your
@@ -32,11 +33,12 @@ export const Home = () => {
       <Row>
         <h1 className="mt-5 mb-5"> About Mock-Buddy </h1>
       </Row>
-      {abtTxt.map((abt) => (
-        <Row className="mb-5">
+      {abtTxt.map((abt, index) => (
+        <Row key={index} className="mb-5">
           <Col>
             <h5>{abt.col1}</h5>
           </Col>
+
           <Col>
             <h5>{abt.col2}</h5>
           </Col>

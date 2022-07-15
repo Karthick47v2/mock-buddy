@@ -38,7 +38,11 @@ export const Slide = (props) => {
   };
 
   return (
-    <Container ref={containerRef} style={{ position: "relative" }}>
+    <Container
+      ref={containerRef}
+      style={{ position: "relative" }}
+      data-testid="slide"
+    >
       <ReactGoogleSlides
         width={1024}
         height={768}

@@ -27,7 +27,6 @@ export const ModalPopup = forwardRef((props, ref) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-
     if (
       form.checkValidity() === false ||
       !tempGLink.includes("docs.google.com/presentation/d/")

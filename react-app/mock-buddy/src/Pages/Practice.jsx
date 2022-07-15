@@ -8,6 +8,7 @@ import {
   ToggleButtonGroup,
   Container,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { VideoStream } from "../Components/videoStream";
 import { Slide } from "../Components/slide";
 import { PermissionAlert } from "../Components/permissionAlert";
@@ -39,6 +40,13 @@ export const Practice = () => {
    */
   const [mode, setMode] = useState(true);
 
+  const navigate = useNavigate();
+
+  const navigateToResults = () => {
+    setIsRecord(false);
+    navigate("results");
+  };
+
   // ask for permission on start
   useEffect(() => {
     navigator.mediaDevices
@@ -56,6 +64,7 @@ export const Practice = () => {
       {permissionStatus === "Rejected" && <PermissionAlert />}
       <Row>
         <Col></Col>
+
         <Col>
           <Card
             className="my-3 p-5 text-center"
@@ -163,7 +172,7 @@ export const Practice = () => {
                 <Button
                   variant="success"
                   disabled={!isRecord}
-                  onClick={() => setIsRecord(false)}
+                  onClick={navigateToResults}
                   className="ms-3"
                 >
                   Finish
@@ -176,6 +185,7 @@ export const Practice = () => {
             </Card.Footer>
           </Card>
         </Col>
+
         <Col></Col>
       </Row>
     </Container>

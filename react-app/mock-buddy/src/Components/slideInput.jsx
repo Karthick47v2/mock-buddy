@@ -24,7 +24,11 @@ export const SlideInput = (props) => {
             isInvalid={props.formError}
             onChange={props.onFormChange}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback
+            data-testid={"validator"}
+            data-validity={!props.formError}
+            type="invalid"
+          >
             Please enter a valid URL
           </Form.Control.Feedback>
         </FloatingLabel>
