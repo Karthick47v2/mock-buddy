@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import ReactGoogleSlides from "react-google-slides";
 import { ModalPopup } from "./modalPopup";

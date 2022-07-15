@@ -1,8 +1,10 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { ModalPopup } from "../modalPopup";
 import { SlideInput } from "../slideInput";
+import { Slide } from "../slide";
 
 const setup = () => {
   render(<SlideInput />);
@@ -60,12 +62,17 @@ describe("Validate user input", () => {
       "false"
     );
   });
+});
 
-  test("Should proceed futher on correct input format", async () => {
-    await clickSubmit(txtBox, "https://docs.google.com/presentation/d/xxx");
-    expect(screen.getByTestId("validator")).toHaveAttribute(
-      "data-validity",
-      "true"
-    );
-  });
+test("Should proceed futher on correct input format", async () => {
+  const handleShowModal = jest.fn();
+  render(<Slide showModal={true} handleShowModal={handleShowModal} />);
+  await clickSubmit(
+    screen.getByRole("textbox"),
+    "https://docs.google.com/presentation/d/xxx"
+  );
+  expect(screen.getByTestId("validator")).toHaveAttribute(
+    "data-validity",
+    "true"
+  );
 });
