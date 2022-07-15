@@ -43,21 +43,18 @@ describe("Validate user input", () => {
   });
   test("Should display error on wrong format", async () => {
     await clickSubmit(txtBox, "https://docs.google.com/presentation/s");
-
     expect(screen.getByTestId("validator")).toHaveAttribute(
       "data-validity",
       "false"
     );
 
     await clickSubmit(txtBox, "https://www.google.com/presentation/s");
-
     expect(screen.getByTestId("validator")).toHaveAttribute(
       "data-validity",
       "false"
     );
 
     await clickSubmit(txtBox, "www.google.com/presentation/d/");
-
     expect(screen.getByTestId("validator")).toHaveAttribute(
       "data-validity",
       "false"
@@ -66,7 +63,6 @@ describe("Validate user input", () => {
 
   test("Should proceed futher on correct input format", async () => {
     await clickSubmit(txtBox, "https://docs.google.com/presentation/d/xxx");
-
     expect(screen.getByTestId("validator")).toHaveAttribute(
       "data-validity",
       "true"
