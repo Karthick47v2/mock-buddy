@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-/**
- * JSX component for timer
- * @param {Object} props - component props
- * @param {Boolean} props.isActive - recording status
- * @returns {JSX.Element} - popup modal
- */
-export const Timer = (props) => {
+export const Timer = () => {
+  const isActive = useSelector((state) => state.av.isRecord);
   /**
    * @type {[number, Function]} Counter
    */
@@ -14,13 +10,13 @@ export const Timer = (props) => {
 
   useEffect(() => {
     let intervalId;
-    if (props.isActive) {
+    if (isActive) {
       intervalId = setInterval(() => {
         setCounter((prev) => prev + 1);
       }, 1000);
     }
     return () => clearInterval(intervalId);
-  }, [props.isActive, counter]);
+  }, [isActive, counter]);
 
   return (
     <h2>

@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
-import { req } from "./req";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAudioResults, fetchVideoResults } from "../store/av-actions";
+import { avActions } from "../store/av-slice";
 
 /**
  * Socket endpoint address
@@ -28,61 +31,66 @@ const videoConstraints = {
   frameRate: { ideal: 24, max: 30 },
 };
 
-/**
- * JSX component for AV stream
- * @param {Object} props - component props
- * @param {Boolean} props.isRecord - recording status
- * @param {String} props.imageSrc - webcam screenshot on Base64 format
- * @param {(imgSrc: String) => void} props.handleImgSrc - set imgSrc
- * @returns {JSX.Element} - popup modal
- */
-export const VideoStream = (props) => {
+export const VideoStream = () => {
+  const dispatch = useDispatch();
+  const isRecord = useSelector((state) => state.av.isRecord);
+  const imgSrc = useSelector((state) => state.av.imgSrc);
+
   // reference for webcam
   const webcamRef = useRef(null);
 
   // send recorded audio and request for audio & video feedback on record stop
-  const onRecStop = (blob) => {
+  const onRecStop = async (blob) => {
     // send recorded audio wrapped in formdat as POST req
     const formData = new FormData();
     let blobWithProp = new Blob([blob["blob"]], blob["options"]);
 
     formData.append("file", blobWithProp);
 
+    // props.setIsLoading(true);
     const postRequest = {
       method: "POST",
       body: formData,
     };
     // POST req - audio
-    req("http://127.0.0.1:5000/audio_out/", postRequest);
+    dispatch(fetchAudioResults(postRequest));
 
     // GET req - video
-    req("http://127.0.0.1:5000/vid_fb/", { method: "GET" });
+    dispatch(fetchVideoResults());
   };
 
   // webcam preview
   useEffect(() => {
     const previewInterval = setInterval(() => {
-      props.handleImgSrc(webcamRef.current.getScreenshot());
+      dispatch(avActions.setImgSrc(webcamRef.current.getScreenshot()));
     }, 100);
     return () => clearInterval(previewInterval);
-    // eslint-disable-next-line
-  }, [props.isRecord]);
+  }, [isRecord]);
 
   // send frames to server in an interval when record button pressed
   useEffect(() => {
-    if (!props.isRecord) return;
+    if (!isRecord) return;
 
     // GET req - reset required variables on start
-    req("http://127.0.0.1:5000/init/", { method: "GET" });
+    fetch("http://127.0.0.1:5000/init/")
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // socket connection
     const socketInterval = setInterval(() => {
-      if (!props.imageSrc) return;
-      socket.emit("process_frame", props.imageSrc);
+      if (!imgSrc) return;
+      socket.emit("process_frame", imgSrc);
     }, 1000);
     return () => clearInterval(socketInterval);
-    // eslint-disable-next-line
-  }, [props.isRecord]);
+  }, [isRecord]);
 
   return (
     <>
@@ -95,7 +103,7 @@ export const VideoStream = (props) => {
       />
       <div style={{ display: "none" }}>
         <ReactMic
-          record={props.isRecord}
+          record={isRecord}
           onStop={onRecStop}
           mimeType="audio/wav"
           channelCount={1}

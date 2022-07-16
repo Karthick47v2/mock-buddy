@@ -1,20 +1,18 @@
 import React, { forwardRef, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { practiceActions } from "../store/practice-slice";
+import { slideActions } from "../store/slide-slice";
 import { SlideInput } from "./slideInput";
 
 /**
  * JSX component for displaying popup modal
- * @param {Object} props - component props
- * @param {() => void} props.handleClose - close modal
- * @param {(gLink: string) => void} props.setGLink - set glink value
  * @param {Ref} ref - reference to container object
  * @returns {JSX.Element} - popup modal
  */
-export const ModalPopup = forwardRef((props, ref) => {
-  /**
-   * @type {[Boolean, Function]} Error
-   */
-  const [error, setError] = useState(false);
+export const ModalPopup = forwardRef((_, ref) => {
+  const dispatch = useDispatch();
+  const showModal = useSelector((state) => state.practice.showModal);
   /**
    * @type {[string, Function]}
    */
@@ -31,19 +29,19 @@ export const ModalPopup = forwardRef((props, ref) => {
       form.checkValidity() === false ||
       !tempGLink.includes("docs.google.com/presentation/d/")
     ) {
-      setError(true);
+      dispatch(slideActions.setErrorStatus({ status: true }));
       e.stopPropagation();
     } else {
-      setError(false);
-      props.setGLink(tempGLink);
-      props.handleClose();
+      dispatch(
+        slideActions.setErrorStatus({ status: false, gLink: tempGLink })
+      );
+      dispatch(practiceActions.switchModalVisibility(false));
     }
   };
 
   return (
     <Modal
-      show={props.show}
-      onHide={props.handleClose}
+      show={showModal}
       centered
       backdrop="static"
       keyboard={false}
@@ -63,7 +61,6 @@ export const ModalPopup = forwardRef((props, ref) => {
         <SlideInput
           onFormSubmit={handleFormSubmit}
           onFormChange={handleFormChange}
-          formError={error}
         />
       </Modal.Body>
       <Modal.Footer />
