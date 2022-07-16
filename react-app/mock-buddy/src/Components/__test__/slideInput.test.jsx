@@ -2,20 +2,26 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import store from "../../store/index";
 import { ModalPopup } from "../modalPopup";
 import { SlideInput } from "../slideInput";
 import { Slide } from "../slide";
 
 const setup = () => {
-  render(<SlideInput />);
+  render(
+    <Provider store={store}>
+      <SlideInput />
+    </Provider>
+  );
   return screen.getByRole("textbox");
 };
 
 const setupModal = () => {
-  const setGLink = jest.fn();
-  const handleClose = jest.fn();
   render(
-    <ModalPopup show={true} setGLink={setGLink} handleClose={handleClose} />
+    <Provider store={store}>
+      <ModalPopup />
+    </Provider>
   );
   return screen.getByRole("textbox");
 };
@@ -65,8 +71,11 @@ describe("Validate user input", () => {
 });
 
 test("Should proceed futher on correct input format", async () => {
-  const handleShowModal = jest.fn();
-  render(<Slide showModal={true} handleShowModal={handleShowModal} />);
+  render(
+    <Provider store={store}>
+      <Slide />
+    </Provider>
+  );
   await clickSubmit(
     screen.getByRole("textbox"),
     "https://docs.google.com/presentation/d/xxx"

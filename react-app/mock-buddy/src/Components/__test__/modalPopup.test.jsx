@@ -1,10 +1,18 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { Provider } from "react-redux";
+import store from "../../store/index";
 import { ModalPopup } from "../modalPopup";
 
 // according to eslint rules
-const setup = () => render(<ModalPopup show={true} />);
+const setup = () => {
+  render(
+    <Provider store={store}>
+      <ModalPopup />
+    </Provider>
+  );
+};
 
 describe("Test ModalPopup attributes", () => {
   test("Modal must be centered", () => {
