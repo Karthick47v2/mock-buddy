@@ -7,65 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  py_test:
-    runs-on: ubuntu-latest
-    name: Test - Python
-    defaults:
-      run:
-        working-directory: ./react-app/mock-buddy/app
-    steps:
-      - name: Checkout source repo
-        uses: actions/checkout@v3
-      - name: Setup Python 3.8
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.8"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          sudo apt install portaudio19-dev
-          pip install pylint pytest pytest-cov
-          pip install -r requirements.txt
-      - name: Analyze
-        run: pylint $(git ls-files '*.py')
-      # - name: Test
-      #   run: |
-      #     python -m pytest --cov=./ --cov-report=xml
-      # - name: Upload coverage report to Codecov
-      #   uses: codecov/codecov-action@v2
-      #   with:
-      #     env_vars: OS,PYTHON
-      #     fail_ci_if_error: false
-      #     flags: unittests
-      #     verbose: true
-
-  heroku_deploy:
-    runs-on: ubuntu-latest
-    name: Deploy to Heroku
-    needs: py_test
-    if: "contains(github.event.head_commit.message, 'deploy to heroku')"
-    defaults:
-      run:
-        working-directory: ./react-app/mock-buddy/app
-    steps:
-      - name: Checkout source repo
-        uses: actions/checkout@v3
-      - name: Deploy
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "mock-buddy"
-          heroku_email: "karthicksharma11@gmail.com"
-          procfile: "web: gunicorn app:app"
-
   react_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
-    defaults:
-      run:
-        working-directory: ./react-app/mock-buddy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -81,9 +27,6 @@ jobs:
         node-version: [16.x]
     needs: react_test
     if: "contains(github.event.head_commit.message, 'deploy to gh')"
-    defaults:
-      run:
-        working-directory: ./react-app/mock-buddy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -95,4 +38,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: gh-pages
-          folder: ./react-app/mock-buddy/build
+          folder: build
