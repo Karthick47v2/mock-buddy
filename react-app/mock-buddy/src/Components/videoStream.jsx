@@ -4,8 +4,10 @@ import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchAudioResults, fetchVideoResults } from "../store/av-actions";
 import { avActions } from "../store/av-slice";
+import { practiceActions } from "../store/practice-slice";
 
 /**
  * Socket endpoint address
@@ -33,6 +35,7 @@ const videoConstraints = {
 
 export const VideoStream = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isRecord = useSelector((state) => state.av.isRecord);
   const imgSrc = useSelector((state) => state.av.imgSrc);
 
@@ -47,7 +50,8 @@ export const VideoStream = () => {
 
     formData.append("file", blobWithProp);
 
-    // props.setIsLoading(true);
+    dispatch(practiceActions.switchLoading(true));
+
     const postRequest = {
       method: "POST",
       body: formData,
@@ -57,6 +61,7 @@ export const VideoStream = () => {
 
     // GET req - video
     dispatch(fetchVideoResults());
+    navigate("results");
   };
 
   // webcam preview
@@ -71,25 +76,25 @@ export const VideoStream = () => {
   useEffect(() => {
     if (!isRecord) return;
 
-    // // GET req - reset required variables on start
-    // fetch("http://127.0.0.1:5000/init/")
-    //   .then(async (res) => {
-    //     const data = await res.json();
-    //     if (!res.ok) {
-    //       const err = (data && data.message) || res.status;
-    //       return Promise.reject(err);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    // GET req - reset required variables on start
+    fetch("http://127.0.0.1:5000/init/")
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    // // socket connection
-    // const socketInterval = setInterval(() => {
-    //   if (!imgSrc) return;
-    //   socket.emit("process_frame", imgSrc);
-    // }, 1000);
-    // return () => clearInterval(socketInterval);
+    // socket connection
+    const socketInterval = setInterval(() => {
+      if (!imgSrc) return;
+      socket.emit("process_frame", imgSrc);
+    }, 1000);
+    return () => clearInterval(socketInterval);
   }, [isRecord]);
 
   return (

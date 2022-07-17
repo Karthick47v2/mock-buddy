@@ -14,8 +14,8 @@ const practiceSlice = createSlice({
     switchPresentationMode(state, action) {
       state.presentationMode = action.payload;
     },
-    switchLoading(state) {
-      state.isLoading = !state.isLoading;
+    switchLoading(state, action) {
+      state.isLoading = action.payload;
     },
   },
 });
