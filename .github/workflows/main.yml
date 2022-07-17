@@ -39,6 +39,25 @@ jobs:
       #     flags: unittests
       #     verbose: true
 
+  heroku_deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Heroku
+    needs: py_test
+    if: "contains(github.event.head_commit.message, 'deploy to heroku')"
+    defaults:
+      run:
+        working-directory: ./react-app/mock-buddy/app
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v3
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "mock-buddy"
+          heroku_email: "karthicksharma11@gmail.com"
+          procfile: "web: gunicorn app:app"
+
   react_test:
     runs-on: ubuntu-latest
     strategy:
