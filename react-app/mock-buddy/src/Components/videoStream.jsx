@@ -71,25 +71,25 @@ export const VideoStream = () => {
   useEffect(() => {
     if (!isRecord) return;
 
-    // GET req - reset required variables on start
-    fetch("http://127.0.0.1:5000/init/")
-      .then(async (res) => {
-        const data = await res.json();
-        if (!res.ok) {
-          const err = (data && data.message) || res.status;
-          return Promise.reject(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // // GET req - reset required variables on start
+    // fetch("http://127.0.0.1:5000/init/")
+    //   .then(async (res) => {
+    //     const data = await res.json();
+    //     if (!res.ok) {
+    //       const err = (data && data.message) || res.status;
+    //       return Promise.reject(err);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
-    // socket connection
-    const socketInterval = setInterval(() => {
-      if (!imgSrc) return;
-      socket.emit("process_frame", imgSrc);
-    }, 1000);
-    return () => clearInterval(socketInterval);
+    // // socket connection
+    // const socketInterval = setInterval(() => {
+    //   if (!imgSrc) return;
+    //   socket.emit("process_frame", imgSrc);
+    // }, 1000);
+    // return () => clearInterval(socketInterval);
   }, [isRecord]);
 
   return (
