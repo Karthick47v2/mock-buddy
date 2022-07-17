@@ -9,10 +9,6 @@ from flask_cors import CORS
 from src.face_model import FaceModel
 from src.audio_util import AudioUtil
 
-
-#### SESSION ######
-
-
 # create app instance with CORS
 app = Flask(__name__)
 cors = CORS(app)
@@ -20,21 +16,17 @@ cors = CORS(app)
 # socket comm
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# CHECK IT OUT #SDSSSSSSSSSSSSSSSs
-#app.config['SECRET_KEY'] = 'myse'
-
 # api key
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './secrets/mock-buddy.json'
 
 # initialize models
 fm = FaceModel()
 
+
 # Restful APIs
-
-
 @app.route('/init/', methods=['GET'])
 def init_model():
-    """initialize or rest var
+    """Initialize or reset result variables
 
     Returns:
         dict[str,str]: response
@@ -45,7 +37,7 @@ def init_model():
 
 @app.route('/vid_fb/', methods=['GET'])
 def get_vid_fb():
-    """return feedback
+    """Return feedback
 
     Returns:
         dict[str,str]: response

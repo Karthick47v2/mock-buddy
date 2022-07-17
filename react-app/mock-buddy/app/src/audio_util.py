@@ -49,7 +49,7 @@ class AudioUtil:
         sf.write(self.__file_name, file, s_rate, subtype='PCM_16')
 
     def get_speech_rate(self):
-        """ Return speech rate in wpm (words per minute)
+        """Return speech rate in wpm (words per minute)
 
         Returns:
             float: speech rate in wpm

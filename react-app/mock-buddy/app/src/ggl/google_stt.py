@@ -32,7 +32,7 @@ class GoogleSTT:
         )
 
     def get_word_count(self, bucket_name, file_name):
-        """ Calculate word count from transcript
+        """Calculate word count from transcript
 
         Args:
             bucket_name (str): Google Cloud bucket name

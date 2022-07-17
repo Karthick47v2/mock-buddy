@@ -36,14 +36,14 @@ class FaceModel:
         return cv2.imdecode(buff, cv2.IMREAD_COLOR)
 
     def reset(self):
-        """ Reset user scores to default
+        """Reset user scores to default
         """
         self.__interactivity = [0]
         self.__inactive = 0
         self.__look = 0
 
     def __extract_kps(self, frame):
-        """ Extract keypoints from input image using Facial landmark detection model
+        """Extract keypoints from input image using Facial landmark detection model
 
         Args:
             frame (ndarray): image array
@@ -57,7 +57,7 @@ class FaceModel:
 
     @classmethod
     def __get_vals(cls, kps, threshold=17):
-        """ Return interactivity and posture scores
+        """Return interactivity and posture scores
 
         Args:
             kps (ndarray): numpy array of keypoints
@@ -78,7 +78,7 @@ class FaceModel:
 
     @classmethod
     def __resize_w_pad(cls, img, req_size):
-        """ Resize and pad input image inorder to, not to change aspect ration of image
+        """Resize and pad input image inorder to, not to change aspect ration of image
 
         Args:
             img (ndarray): image array
@@ -139,7 +139,7 @@ class FaceModel:
         self.__inactive += 1
 
     def get_vid_feedback(self):
-        """ Return all processed scores
+        """Return all processed scores
 
         Returns:
             Dict(float, float, float): visibility, posture and interactivity scores
