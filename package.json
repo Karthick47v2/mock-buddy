@@ -9,7 +9,7 @@
     "@babel/preset-react": "^7.18.6",
     "@reduxjs/toolkit": "^1.8.3",
     "bootstrap": "^5.2.0-beta1",
-    "fs": "^0.0.1-security",
+    "fs": "^0.0.2",
     "jest-fetch-mock": "^3.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
