@@ -13,7 +13,7 @@ import { practiceActions } from "../store/practice-slice";
  * Socket endpoint address
  * @type {string}
  */
-const ENDPOINT = "http://127.0.0.1:5000";
+const ENDPOINT = "https://mock-buddy.herokuapp.com/";
 
 /**
  * websocket
@@ -77,7 +77,7 @@ export const VideoStream = () => {
     if (!isRecord) return;
 
     // GET req - reset required variables on start
-    fetch("http://127.0.0.1:5000/init/")
+    fetch(ENDPOINT + "init/")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok) {
