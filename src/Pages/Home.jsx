@@ -26,7 +26,7 @@ export const Home = () => {
         <Col className="d-flex align-items-center">
           <h3>
             Mock-Buddy is an AI powered web application for practicing your
-            presentation and public speaking skills (remote)
+            presentation and public speaking skills.
           </h3>
         </Col>
       </Row>
