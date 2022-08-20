@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+<h1 align="center">Welcome to mock-buddy 👋</h1>
+<p>
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT license-yellow.svg" />
+  </a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🏠 [Homepage](https://Karthick47v2.github.io/mock-buddy)
 
-## Available Scripts
+Communication is the most important skill for improving our career. We all had haunted by the fear of public speaking at some point. Not only speaking on stage in front of hundreds of people, it could be school presentations, university viva / presentations and job interviews. Some people overcome this, but most of the people still didn’t have confidence in speaking. The only way to overcome this is, practicing by yourself. But there is a catch, you can’t practice by yourself because you need other one to give feedback about how you perform. If you have a good circle, then they can help you out. What if they are also like you? and everyone is not going to be there all time. Or, you can consult a therapist or coach and pay them to improve your ability. But, do you really need to pay couple of bucks to improve your skills ?? is this a video game? Mock- Buddy an AI assisted listener, is there for you to listen to all your talks and give feedback about it for free. Mock-Buddy’s vision is to empower everyone around the world to overcome the fear of public speaking and give a career boost.
 
-In the project directory, you can run:
+Supporting repositories,
 
-### `yarn start`
+- Back-end -> [mock-buddy-server](https://github.com/Karthick47v2/mock-buddy-server)
+- Face landmark detector training -> [face-landmark-detector](https://github.com/Karthick47v2/face-landmark-detector)
+- Speech emotion classifier training -> [speech-emotion-classifier](https://github.com/Karthick47v2/speech-emotion-classifier)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Below shown high-level diagram represents the workflow,
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<img src="img/hld.png" alt="HLD" style="width: 900px"/>
 
-### `yarn test`
+Screenshots:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[SOON]
 
-### `yarn build`
+# Development
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js >= 16
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Install
 
-### `yarn eject`
+```sh
+npm install --force
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+\*Tested on Firefox and Google Chrome
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```sh
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+> App should now be running on http://localhost:8080/
 
-## Learn More
+## Run tests
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You can also view the code coverage report [here]() [SOON]
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm test
+```
 
-### Code Splitting
+## Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+👤 **Karthick T. Sharma**
 
-### Analyzing the Bundle Size
+- Github: [@karthick47v2](https://github.com/karthick47v2)
+- LinkedIn: [@karthick47](https://linkedin.com/in/karthick47)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🤝 Contributing
 
-### Making a Progressive Web App
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Karthick47v2/mock-buddy/issues).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Show your support
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Give a ⭐️ if this project helped you!
