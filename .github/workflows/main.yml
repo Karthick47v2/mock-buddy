@@ -3,6 +3,7 @@ name: CI Workflow
 on:
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
 
@@ -12,30 +13,44 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install dependencies
         run: npm i --force
+
       - name: Test
         run: npm run coverage
+
+      - name: Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t
 
   deploy_gh_pages:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
+
     needs: react_test
     if: "contains(github.event.head_commit.message, 'deploy to gh')"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install & build
         run: |
           npm install --force
           npm run build
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.4
+
         with:
           branch: gh-pages
           folder: build
