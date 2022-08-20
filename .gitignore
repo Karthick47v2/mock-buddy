@@ -9,6 +9,9 @@
 /coverage
 .eslintrc.json
 
+# vscode
+.vscode
+
 # production
 /build
 
