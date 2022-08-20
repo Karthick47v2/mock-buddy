@@ -1,14 +1,18 @@
 {
   "files": {
-    "main.css": "/mock-buddy/static/css/main.92c2e36a.css",
-    "main.js": "/mock-buddy/static/js/main.bf5d7704.js",
+    "main.css": "/mock-buddy/static/css/main.8a4f47cc.css",
+    "main.js": "/mock-buddy/static/js/main.94bdc37b.js",
+    "static/media/step2.png": "/mock-buddy/static/media/step2.05e6bb5703a8e2d58f06.png",
+    "static/media/404.svg": "/mock-buddy/static/media/404.bdf1c60c297dc6528f56fe6a382dacdf.svg",
+    "static/media/audio.svg": "/mock-buddy/static/media/audio.9d7710dff773bb4bde110ea5b6fb4f80.svg",
     "static/media/home.svg": "/mock-buddy/static/media/home.b8ace88a3fc9a009d6b17cd20e27ccd2.svg",
+    "static/media/video.svg": "/mock-buddy/static/media/video.160b9c673108010bead6d65fdd7a9a00.svg",
     "index.html": "/mock-buddy/index.html",
-    "main.92c2e36a.css.map": "/mock-buddy/static/css/main.92c2e36a.css.map",
-    "main.bf5d7704.js.map": "/mock-buddy/static/js/main.bf5d7704.js.map"
+    "main.8a4f47cc.css.map": "/mock-buddy/static/css/main.8a4f47cc.css.map",
+    "main.94bdc37b.js.map": "/mock-buddy/static/js/main.94bdc37b.js.map"
   },
   "entrypoints": [
-    "static/css/main.92c2e36a.css",
-    "static/js/main.bf5d7704.js"
+    "static/css/main.8a4f47cc.css",
+    "static/js/main.94bdc37b.js"
   ]
 }
