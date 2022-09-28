@@ -3,6 +3,9 @@
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT license-yellow.svg" />
   </a>
+  <a href="https://codecov.io/gh/Karthick47v2/mock-buddy" > 
+    <img src="https://codecov.io/gh/Karthick47v2/mock-buddy/branch/main/graph/badge.svg?token=UYEV5I2UK9"/> 
+  </a>
 </p>
 
 ## 🏠 [Homepage](https://Karthick47v2.github.io/mock-buddy)
@@ -47,7 +50,7 @@ npm start
 
 ## Run tests
 
-You can also view the code coverage report [here]() [SOON]
+You can also view the code coverage report [here](https://app.codecov.io/gh/Karthick47v2/mock-buddy)
 
 ```
 npm test
