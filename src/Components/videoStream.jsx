@@ -52,12 +52,8 @@ export const VideoStream = () => {
 
     dispatch(practiceActions.switchLoading(true));
 
-    const postRequest = {
-      method: "POST",
-      body: formData,
-    };
     // POST req - audio
-    dispatch(fetchAudioResults(postRequest));
+    dispatch(fetchAudioResults({ method: "POST", body: formData }));
 
     // GET req - video
     dispatch(fetchVideoResults());
