@@ -1,47 +1,29 @@
 import React, { useEffect } from "react";
-import { Container, Col, Row, Image, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Image,
+  Spinner,
+  Tab,
+  Tabs,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { AccordionMapper } from "../Components/accordionMapper";
 import { practiceActions } from "../store/practice-slice";
+import { fetchPPTXResults } from "../store/slide-actions";
 import audio from "../Images/results-page/audio.svg";
 import video from "../Images/results-page/video.svg";
+import { SlideResults } from "../Components/slideResults";
+import { AudioResults } from "../Components/audioResults";
+import { VideoResults } from "../Components/videoResults";
 
 export const Results = () => {
   const dispatch = useDispatch();
+  const gLink = useSelector((state) => state.slide.slidesLink);
   const loading = useSelector((state) => state.practice.isLoading);
   const audioResults = useSelector((state) => state.av.audioResults);
   const videoResults = useSelector((state) => state.av.videoResults);
-
-  const audioScores = [
-    {
-      val: audioResults.wpm,
-      attr: `Speech rate (wpm): `,
-      expl: `This is insights of ..`,
-    },
-    {
-      val: "0",
-      attr: `Speech confidence score: `,
-      expl: `This is insights of ..`,
-    },
-  ];
-
-  const videoScores = [
-    {
-      val: videoResults.visibility_score,
-      attr: `Visibility score: `,
-      expl: `This is insights of ..`,
-    },
-    {
-      val: videoResults.posture_score,
-      attr: `Posture score: `,
-      expl: `This is insights of ..`,
-    },
-    {
-      val: videoResults.interactivity_score,
-      attr: `Interactivity score: `,
-      expl: `This is insights of ..`,
-    },
-  ];
+  const pptxResults = useSelector((state) => state.slide.pptxResults);
 
   useEffect(() => {
     if (
@@ -50,14 +32,35 @@ export const Results = () => {
         Object.keys(videoResults).length === 0
       )
     ) {
-      dispatch(practiceActions.switchLoading(false));
+      dispatch(
+        fetchPPTXResults({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url: gLink }),
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioResults, videoResults]);
+
+  useEffect(() => {
+    if (Object.keys(pptxResults).length !== 0) {
+      dispatch(practiceActions.switchLoading(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pptxResults]);
+
   return (
     <>
       {loading ? (
-        <Spinner animation="border" role="status">
+        <Spinner
+          animation="border"
+          variant="secondary"
+          role="status"
+          className="position-fixed top-50 end-50"
+        >
           <span className="visually-hidden"> Loading... </span>
         </Spinner>
       ) : (
@@ -65,25 +68,31 @@ export const Results = () => {
           <div className="text-center">
             <h1 className="mb-5"> Results </h1>
           </div>
-          <Row>
-            <Col>
-              <Image src={audio} fluid style={{ maxWidth: "60%" }} />
-            </Col>
+          <Tabs defaultActiveKey={"performance"} className="mb-5" justify>
+            <Tab eventKey={"performance"} title="Performance metrics">
+              <Row>
+                <Col>
+                  <Image src={audio} fluid style={{ maxWidth: "60%" }} />
+                </Col>
 
-            <Col>
-              <Image src={video} fluid style={{ maxWidth: "60%" }} />
-            </Col>
-          </Row>
+                <Col>
+                  <Image src={video} fluid style={{ maxWidth: "60%" }} />
+                </Col>
+              </Row>
 
-          <Row>
-            <Col>
-              <AccordionMapper scores={audioScores} />
-            </Col>
-
-            <Col>
-              <AccordionMapper scores={videoScores} />
-            </Col>
-          </Row>
+              <Row>
+                <Col>
+                  <AudioResults />
+                </Col>
+                <Col>
+                  <VideoResults />
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey={"slide"} title="Slide metrics">
+              <SlideResults />
+            </Tab>
+          </Tabs>
         </Container>
       )}
     </>

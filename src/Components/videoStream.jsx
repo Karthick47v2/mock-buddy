@@ -8,12 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { fetchAudioResults, fetchVideoResults } from "../store/av-actions";
 import { avActions } from "../store/av-slice";
 import { practiceActions } from "../store/practice-slice";
+import { slideActions } from "../store/slide-slice";
 
 /**
  * Socket endpoint address
  * @type {string}
  */
-const ENDPOINT = "https://mock-buddy.herokuapp.com/";
+// HEROKU ENDPOINT - "https://mock-buddy.herokuapp.com/";
+const ENDPOINT = "http://127.0.0.1:5000/";
 
 /**
  * websocket
@@ -44,6 +46,9 @@ export const VideoStream = () => {
 
   // send recorded audio and request for audio & video feedback on record stop
   const onRecStop = async (blob) => {
+    dispatch(avActions.resetResults());
+    dispatch(slideActions.resetResults());
+
     // send recorded audio wrapped in formdat as POST req
     const formData = new FormData();
     let blobWithProp = new Blob([blob["blob"]], blob["options"]);
@@ -51,6 +56,7 @@ export const VideoStream = () => {
     formData.append("file", blobWithProp);
 
     dispatch(practiceActions.switchLoading(true));
+    dispatch(practiceActions.switchRestrictAccess(false));
 
     // POST req - audio
     dispatch(fetchAudioResults({ method: "POST", body: formData }));

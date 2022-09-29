@@ -1,6 +1,7 @@
 import { avActions } from "./av-slice";
 
-const ENDPOINT = "https://mock-buddy.herokuapp.com/";
+// HEROKU ENDPOINT - "https://mock-buddy.herokuapp.com/";
+const ENDPOINT = "http://127.0.0.1:5000/";
 
 export const fetchAudioResults = (post) => {
   return async (dispatch) => {

@@ -1,6 +1,6 @@
 import { slideActions } from "./slide-slice";
 
-// const ENDPOINT = "https://mock-buddy.herokuapp.com/";
+// HEROKU ENDPOINT - "https://mock-buddy.herokuapp.com/";
 const ENDPOINT = "http://127.0.0.1:5000/";
 
 // multiprocessing

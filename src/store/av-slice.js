@@ -29,6 +29,10 @@ const avSlice = createSlice({
     setImgSrc(state, action) {
       state.imgSrc = action.payload;
     },
+    resetResults(state) {
+      state.audioResults = {};
+      state.videoResults = {};
+    },
   },
 });
 

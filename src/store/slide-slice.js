@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const slideSlice = createSlice({
-  // https://docs.google.com/presentation/d/1BVRPYon5oT-a3WGGzN6gPHfZ_k9E9UwwbqazZeY1Srg/edit?usp=sharing
+  // CEP-MID - https://docs.google.com/presentation/d/1BVRPYon5oT-a3WGGzN6gPHfZ_k9E9UwwbqazZeY1Srg/edit?usp=sharing
   name: "slide",
   initialState: {
     slidesLink:
@@ -18,6 +18,9 @@ const slideSlice = createSlice({
     },
     setPPTXResults(state, action) {
       state.pptxResults = action.payload;
+    },
+    resetResults(state) {
+      state.pptxResults = {};
     },
   },
 });
