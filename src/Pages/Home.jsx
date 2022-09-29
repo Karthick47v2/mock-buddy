@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { practiceActions } from "../store/practice-slice";
 import img from "../Images/home-page/home.svg";
 
 export const Home = () => {
+  const dispatch = useDispatch();
   const abtTxt = [
     {
       col1: `Public speaking and/or giving presentations are crucial moments in
@@ -16,6 +20,12 @@ export const Home = () => {
             improve areas where you may have weaknesses.`,
     },
   ];
+
+  useEffect(() => {
+    dispatch(practiceActions.switchRestrictAccess(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container className="mt-5 mb-5 text-center text-secondary">
       <Row>

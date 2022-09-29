@@ -1,9 +1,13 @@
+import React, { useEffect } from "react";
 import { Container, Image } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { practiceActions } from "../store/practice-slice";
 import s1 from "../Images/how-to-page/step1.png";
 import s2 from "../Images/how-to-page/step2.png";
 import s3 from "../Images/how-to-page/step3.png";
 
 export const HowTo = () => {
+  const dispatch = useDispatch();
   /**
    * @type {{txt: string, img: string}} step - Dictionary of steps and imgs
    */
@@ -24,6 +28,11 @@ export const HowTo = () => {
       img: s3,
     },
   ];
+
+  useEffect(() => {
+    dispatch(practiceActions.switchRestrictAccess(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container className="my-5 text-secondary">
