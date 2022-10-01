@@ -6,7 +6,6 @@ import { ModalPopup } from "./modalPopup";
 
 export const Slide = () => {
   const gLink = useSelector((state) => state.slide.slidesLink);
-  //sample - https://docs.google.com/presentation/d/1hgNONfulGjvvCqmDIgv-x6AwdmFtGGGQkAxOlmfShvY/edit?usp=sharing
   /**
    * @type {[Boolean, Function]} IsLoading
    */
