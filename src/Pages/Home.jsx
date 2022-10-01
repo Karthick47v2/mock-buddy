@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
+import { slideActions } from "../store/slide-slice";
+import { avActions } from "../store/av-slice";
 import img from "../Images/home-page/home.svg";
 
 export const Home = () => {
@@ -23,6 +25,9 @@ export const Home = () => {
 
   useEffect(() => {
     dispatch(practiceActions.switchRestrictAccess(true));
+    dispatch(practiceActions.resetReducer());
+    dispatch(slideActions.resetReducer());
+    dispatch(avActions.resetReducer());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -33,11 +38,19 @@ export const Home = () => {
           <Image src={img} fluid={true} />
         </Col>
 
-        <Col className="d-flex align-items-center">
-          <h3>
-            Mock-Buddy is an AI powered web application for practicing your
-            presentation and public speaking skills.
-          </h3>
+        <Col className="d-flex align-items-center ms-4">
+          <div>
+            <h4>
+              Finding it hard to adjust your presentations to a remote setting?
+              Delivering remote presentations isn't entirely that different from
+              regular ones. The main challenge remains keeping your audience
+              engaged.
+            </h4>
+            <h3 className="mt-3">
+              That's where Mock-Buddy comes, an AI powered web application for
+              practicing your remote presentation and public speaking skills.
+            </h3>
+          </div>
         </Col>
       </Row>
       <Row>

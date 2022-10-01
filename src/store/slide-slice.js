@@ -22,6 +22,12 @@ const slideSlice = createSlice({
     resetResults(state) {
       state.pptxResults = {};
     },
+    resetReducer(state) {
+      state.slidesLink =
+        "https://docs.google.com/presentation/d/1Dpv-1o9F3g6fZtwiel9boE8Vd1u_GJIpHEU6sO6OTR8/edit?usp=sharing";
+      state.errorStatus = false;
+      state.pptxResults = {};
+    },
   },
 });
 

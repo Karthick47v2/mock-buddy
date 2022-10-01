@@ -33,6 +33,14 @@ const avSlice = createSlice({
       state.audioResults = {};
       state.videoResults = {};
     },
+    resetReducer(state) {
+      state.isRecord = false;
+      state.permissionStatus = "null";
+      state.showCamPreview = false;
+      state.audioResults = {};
+      state.videoResults = {};
+      state.imgSrc = null;
+    },
   },
 });
 

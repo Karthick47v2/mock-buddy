@@ -21,6 +21,12 @@ const practiceSlice = createSlice({
     switchRestrictAccess(state, action) {
       state.restrictResultsAccess = action.payload;
     },
+    resetReducer(state) {
+      state.showModal = true;
+      state.presentationMode = true;
+      state.isLoading = false;
+      state.restrictResultsAccess = true;
+    },
   },
 });
 
