@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import {
   Container,
@@ -11,11 +12,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
 import { fetchPPTXResults } from "../store/slide-actions";
-import audio from "../Images/results-page/audio.svg";
-import video from "../Images/results-page/video.svg";
 import { SlideResults } from "../Components/slideResults";
 import { AudioResults } from "../Components/audioResults";
 import { VideoResults } from "../Components/videoResults";
+import audio from "../Images/results-page/audio.svg";
+import video from "../Images/results-page/video.svg";
+import "../CSS/tabs.css";
 
 export const Results = () => {
   const dispatch = useDispatch();
@@ -42,14 +44,12 @@ export const Results = () => {
         })
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioResults, videoResults]);
 
   useEffect(() => {
     if (Object.keys(pptxResults).length !== 0) {
       dispatch(practiceActions.switchLoading(false));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pptxResults]);
 
   return (

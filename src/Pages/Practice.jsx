@@ -28,6 +28,7 @@ export const Practice = () => {
 
   // ask for permission on start
   useEffect(() => {
+    dispatch(avActions.resetReducer());
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: true })
       .then(() => {
@@ -36,6 +37,7 @@ export const Practice = () => {
       .catch(() => {
         dispatch(avActions.writePermissionStatus("Rejected"));
       });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,7 +46,6 @@ export const Practice = () => {
       {permission === "Rejected" && <PermissionAlert />}
       <Row>
         <Col></Col>
-
         <Col>
           <Card
             className="my-3 p-5 text-center"
