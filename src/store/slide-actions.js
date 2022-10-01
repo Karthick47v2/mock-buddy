@@ -1,13 +1,12 @@
 import { slideActions } from "./slide-slice";
 
-// HEROKU ENDPOINT - "https://mock-buddy.herokuapp.com/";
-const ENDPOINT = "http://127.0.0.1:5000/";
-
-// multiprocessing
 export const fetchPPTXResults = (post) => {
   return async (dispatch) => {
     const fetchHandler = async () => {
-      const res = await fetch(ENDPOINT + "slide_analyze/", post);
+      const res = await fetch(
+        process.env.REACT_APP_END_POINT + "slide_analyze/",
+        post
+      );
       return res.json();
     };
     try {

@@ -11,17 +11,10 @@ import { practiceActions } from "../store/practice-slice";
 import { slideActions } from "../store/slide-slice";
 
 /**
- * Socket endpoint address
- * @type {string}
- */
-// HEROKU ENDPOINT - "https://mock-buddy.herokuapp.com/";
-const ENDPOINT = "http://127.0.0.1:5000/";
-
-/**
  * websocket
  * @type {socket}
  */
-const socket = io(ENDPOINT);
+const socket = io(process.env.REACT_APP_END_POINT);
 
 /**
  * Video preview constraints
@@ -79,7 +72,7 @@ export const VideoStream = () => {
     if (!isRecord) return;
 
     // GET req - reset required variables on start
-    fetch(ENDPOINT + "init/")
+    fetch(process.env.REACT_APP_END_POINT + "init/")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok) {

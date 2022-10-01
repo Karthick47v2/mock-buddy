@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  REACT_APP_END_POINT: ${{ secrets.END_POINT }}
+
 jobs:
   react_test:
     runs-on: ubuntu-latest
