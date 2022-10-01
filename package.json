@@ -22,6 +22,7 @@
     "react-scripts": "^5.0.1",
     "react-webcam": "^7.0.1",
     "redux": "^4.2.0",
+    "redux-persist": "^6.0.0",
     "socket.io-client": "^4.5.2"
   },
   "scripts": {
@@ -42,7 +43,9 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.js"
     ],
-     "moduleNameMapper": { "\\.(css|less)$": "<rootDir>/src/CSS/__mocks__/styleMock.js" },
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/CSS/__mocks__/styleMock.js"
+    },
     "transform": {
       "^.+\\.(js|jsx)$": "babel-jest"
     }
