@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { AccordionMapper } from "../accordionMapper";
+import { ResultsAccordionMapper } from "../resultsAccordionMapper";
 
 const setup = () => {
   const dummyMap = [
@@ -10,7 +10,7 @@ const setup = () => {
       expl: `This is insights of ..`,
     },
   ];
-  render(<AccordionMapper scores={dummyMap} />);
+  render(<ResultsAccordionMapper scores={dummyMap} />);
 };
 
 describe("Test AccordionMapper component renders correctly", () => {
