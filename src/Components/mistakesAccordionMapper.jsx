@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
+import "../CSS/accordion.css";
 
 export const MistakesAccordionMapper = (props) => {
   return (

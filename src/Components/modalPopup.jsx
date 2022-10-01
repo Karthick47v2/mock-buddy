@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
 import { slideActions } from "../store/slide-slice";
 import { SlideInput } from "./slideInput";
+import "../CSS/modal.css";
 
 /**
  * JSX component for displaying popup modal
