@@ -4,7 +4,7 @@ const practiceSlice = createSlice({
   name: "practice",
   initialState: {
     showModal: true,
-    presentationMode: true,
+    practiceMode: true,
     isLoading: false,
     restrictResultsAccess: true,
   },
@@ -12,8 +12,8 @@ const practiceSlice = createSlice({
     switchModalVisibility(state, action) {
       state.showModal = action.payload;
     },
-    switchPresentationMode(state, action) {
-      state.presentationMode = action.payload;
+    switchPracticeMode(state, action) {
+      state.practiceMode = action.payload;
     },
     switchLoading(state, action) {
       state.isLoading = action.payload;
@@ -23,7 +23,7 @@ const practiceSlice = createSlice({
     },
     resetReducer(state) {
       state.showModal = true;
-      state.presentationMode = true;
+      state.practiceMode = true;
       state.isLoading = false;
       state.restrictResultsAccess = true;
     },
