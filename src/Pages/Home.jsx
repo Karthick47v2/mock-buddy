@@ -48,7 +48,7 @@ export const Home = () => {
     <Container className="mt-5 mb-5 text-center text-secondary">
       <Row>
         <Col xs={6}>
-          <Image src={img} fluid={true} />
+          <Image src={img} fluid />
         </Col>
 
         <Col className="d-flex align-items-center ms-4">
