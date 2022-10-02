@@ -17,7 +17,6 @@ import { AudioResults } from "../Components/audioResults";
 import { VideoResults } from "../Components/videoResults";
 import audio from "../Images/results-page/audio.svg";
 import video from "../Images/results-page/video.svg";
-import "../CSS/tabs.css";
 
 export const Results = () => {
   const dispatch = useDispatch();

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
 import { slideActions } from "../store/slide-slice";
 import { SlideInput } from "./slideInput";
-import "../CSS/modal.css";
 
 /**
  * JSX component for displaying popup modal
@@ -55,10 +54,7 @@ export const ModalPopup = forwardRef((_, ref) => {
         <Modal.Title>Paste Google slide link</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h5>
-          You need a publicly shared google slide in order to continue
-          'Presentation mode' or else, switch to 'Speech mode'
-        </h5>
+        <h5>You need a publicly shared google slide in order to continue</h5>
         <SlideInput
           onFormSubmit={handleFormSubmit}
           onFormChange={handleFormChange}
