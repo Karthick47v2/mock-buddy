@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { ReactMic } from "react-mic";
 import { io } from "socket.io-client";
@@ -16,23 +16,14 @@ import { slideActions } from "../store/slide-slice";
  */
 const socket = io(process.env.REACT_APP_END_POINT);
 
-/**
- * Video preview constraints
- * @type {{width: number, height: number, facingMode: string, frameRate: {idea: number, max: number}}}
- * @see <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"> getUserMedia </a>
- */
-const videoConstraints = {
-  width: 800,
-  height: 600,
-  facingMode: "user",
-  frameRate: { ideal: 24, max: 30 },
-};
-
 export const VideoStream = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRecord = useSelector((state) => state.av.isRecord);
-  const imgSrc = useSelector((state) => state.av.imgSrc);
+
+  const [height, setHeight] = useState(600);
+  const [width, setWidth] = useState(800);
+  const divRef = useRef(null);
 
   // reference for webcam
   const webcamRef = useRef(null);
@@ -86,20 +77,45 @@ export const VideoStream = () => {
 
     // socket connection
     const socketInterval = setInterval(() => {
-      if (!imgSrc) return;
-      socket.emit("process_frame", imgSrc);
+      if (!webcamRef.current.getScreenshot()) return;
+      socket.emit("process_frame", webcamRef.current.getScreenshot());
     }, 1000);
     return () => clearInterval(socketInterval);
   }, [isRecord]);
 
+  useEffect(() => {
+    let h = window.innerHeight;
+    let w = window.innerWidth;
+
+    if (window.screen.availWidth > window.screen.availHeight) {
+      h = window.innerWidth;
+      w = window.innerHeight;
+    }
+
+    if (h > 768 && w > 1024) {
+      setHeight(600);
+      setWidth(800);
+    } else {
+      setHeight((3 * h) / 4);
+      setWidth((3 * w) / 4);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.innerHeight, window.innerWidth]);
+
   return (
-    <>
+    <div ref={divRef}>
       <Webcam
         audio={false}
-        videoConstraints={videoConstraints}
+        videoConstraints={{
+          width: width,
+          height: height,
+          facingMode: "user",
+          frameRate: { ideal: 24, max: 30 },
+        }}
         mirrored={true}
         screenshotFormat={"image/jpeg"}
         ref={webcamRef}
+        style={{ visibility: "hidden" }}
       />
       <div style={{ display: "none" }}>
         <ReactMic
@@ -110,6 +126,6 @@ export const VideoStream = () => {
           sampleRate={44100}
         />
       </div>
-    </>
+    </div>
   );
 };
