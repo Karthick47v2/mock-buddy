@@ -4,7 +4,7 @@ export const fetchPPTXResults = (post) => {
   return async (dispatch) => {
     const fetchHandler = async () => {
       const res = await fetch(
-        process.env.REACT_APP_END_POINT + "slide_analyze/",
+        process.env.REACT_APP_LANG_END_POINT + "slide_analyze/",
         post
       );
       return res.json();

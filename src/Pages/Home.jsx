@@ -28,6 +28,19 @@ export const Home = () => {
     dispatch(practiceActions.resetReducer());
     dispatch(slideActions.resetReducer());
     dispatch(avActions.resetReducer());
+
+    // GET req - reset required variables on start
+    fetch(process.env.REACT_APP_LANG_END_POINT + "init/")
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          const err = (data && data.message) || res.status;
+          return Promise.reject(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
