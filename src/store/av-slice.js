@@ -6,11 +6,15 @@ const avSlice = createSlice({
     isRecord: false,
     permissionStatus: "null",
     showCamPreview: false,
+    driveLink: "",
     audioResults: {},
     videoResults: {},
     imgSrc: null,
   },
   reducers: {
+    setDriveLink(state, action) {
+      state.driveLink = action.payload.dLink;
+    },
     switchRecordingStatus(state) {
       state.isRecord = !state.isRecord;
     },
@@ -40,6 +44,7 @@ const avSlice = createSlice({
       state.audioResults = {};
       state.videoResults = {};
       state.imgSrc = null;
+      state.driveLink = "";
     },
   },
 });

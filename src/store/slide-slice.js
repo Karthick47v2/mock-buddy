@@ -6,15 +6,11 @@ const slideSlice = createSlice({
   initialState: {
     slidesLink:
       "https://docs.google.com/presentation/d/1Dpv-1o9F3g6fZtwiel9boE8Vd1u_GJIpHEU6sO6OTR8/edit?usp=sharing",
-    errorStatus: false,
     pptxResults: {},
   },
   reducers: {
-    setErrorStatus(state, action) {
-      state.errorStatus = action.payload.status;
-      if (!action.payload.status) {
-        state.slidesLink = action.payload.gLink;
-      }
+    setSlideLink(state, action) {
+      state.slidesLink = action.payload.gLink;
     },
     setPPTXResults(state, action) {
       state.pptxResults = action.payload;
@@ -25,7 +21,6 @@ const slideSlice = createSlice({
     resetReducer(state) {
       state.slidesLink =
         "https://docs.google.com/presentation/d/1Dpv-1o9F3g6fZtwiel9boE8Vd1u_GJIpHEU6sO6OTR8/edit?usp=sharing";
-      state.errorStatus = false;
       state.pptxResults = {};
     },
   },
