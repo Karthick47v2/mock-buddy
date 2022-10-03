@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
 import { slideActions } from "../store/slide-slice";
-import { SlideInput } from "./slideInput";
+import { DrivePicker } from "./drivePicker";
 
 /**
  * JSX component for displaying popup modal
@@ -14,30 +14,9 @@ export const ModalPopup = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const showModal = useSelector((state) => state.practice.showModal);
   /**
-   * @type {[string, Function]}
+   * @type {[boolean, Function]}
    */
-  const [tempGLink, setTempGLink] = useState("");
-
-  const handleFormChange = (e) => {
-    setTempGLink(e.target.value);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (
-      form.checkValidity() === false ||
-      !tempGLink.includes("docs.google.com/presentation/d/")
-    ) {
-      dispatch(slideActions.setErrorStatus({ status: true }));
-      e.stopPropagation();
-    } else {
-      dispatch(
-        slideActions.setErrorStatus({ status: false, gLink: tempGLink })
-      );
-      dispatch(practiceActions.switchModalVisibility(false));
-    }
-  };
+  const [isShared, setIsShared] = useState(true);
 
   return (
     <Modal
@@ -51,13 +30,33 @@ export const ModalPopup = forwardRef((_, ref) => {
       data-testid="insert-link"
     >
       <Modal.Header className="d-flex justify-content-center align-items-center">
-        <Modal.Title>Paste Google slide link</Modal.Title>
+        <Modal.Title>Select presentation slide</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h5>You need a publicly shared google slide in order to continue</h5>
-        <SlideInput
-          onFormSubmit={handleFormSubmit}
-          onFormChange={handleFormChange}
+        <h5> Make sure its publicly shared</h5>
+        {!isShared && (
+          <h5 style={{ color: "#aa070d" }}>
+            Please select publicly shared slide
+          </h5>
+        )}
+        <DrivePicker
+          label={"Choose Slide"}
+          viewId={"PRESENTATIONS"}
+          callback={(data) => {
+            if (data.action === "picked") {
+              if (data.docs[0].isShared) {
+                setIsShared(true);
+                dispatch(
+                  slideActions.setSlideLink({
+                    gLink: data.docs[0].url,
+                  })
+                );
+                dispatch(practiceActions.switchModalVisibility(false));
+              } else {
+                setIsShared(false);
+              }
+            }
+          }}
         />
       </Modal.Body>
       <Modal.Footer />
