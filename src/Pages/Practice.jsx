@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, ToggleButton, ButtonGroup, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { PermissionAlert } from "../Components/permissionAlert";
 import { avActions } from "../store/av-slice";
 import { practiceActions } from "../store/practice-slice";
 import { LivePractice } from "../Components/livePractice";
+import { VidUpload } from "../Components/vidUpload";
 
 export const Practice = () => {
   const dispatch = useDispatch();
@@ -12,8 +13,6 @@ export const Practice = () => {
   const permission = useSelector((state) => state.av.permissionStatus);
   const record = useSelector((state) => state.av.isRecord);
   const mode = useSelector((state) => state.practice.practiceMode);
-
-  const [isLiveAvail, setIsLiveAvail] = useState(false);
 
   // ask for permission on start
   useEffect(() => {
@@ -77,7 +76,7 @@ export const Practice = () => {
             </ToggleButton>
           </ButtonGroup>
         </Card.Header>
-        <Card.Body>{mode && <LivePractice />}</Card.Body>
+        <Card.Body>{mode ? <LivePractice /> : <VidUpload />}</Card.Body>
       </Card>
     </Container>
   );
