@@ -1,14 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+import { PieChart } from "react-minimal-pie-chart";
 import { ResultsAccordionMapper } from "../Components/resultsAccordionMapper";
 
 export const AudioResults = () => {
   const audioResults = useSelector((state) => state.av.audioResults);
+  const [emoList, setEmoList] = useState([]);
+  const ser = JSON.parse(audioResults.fb);
+
+  const colorPalette = ["#6c63ff", "#8c7cff", "#ab96ff", "#c9b1ff", "#e8cdff"];
+
+  useEffect(() => {
+    setEmoList([]);
+    for (const [idx, [key, val]] of Object.entries(Object.entries(ser))) {
+      if (idx >= 3) {
+        break;
+      }
+      let emo;
+      switch (key) {
+        case "0":
+        case "2":
+        case "3":
+        case "5":
+          emo = "Neutral";
+          break;
+        case "1":
+        case "6":
+          emo = "Pleasant";
+          break;
+        case "4":
+          emo = "Fear";
+          break;
+        default:
+          break;
+      }
+      setEmoList((arr) => [
+        ...arr,
+        { title: emo, value: val, color: colorPalette[idx] },
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const audioScores = [
     {
-      val: audioResults.wpm,
-      attr: `Speech rate (wpm): `,
+      val: Math.round(audioResults.wpm) + " wpm",
+      attr: `Speech rate : `,
       expl: (
         <div>
           <h5>Why speech rate is important?</h5>
@@ -25,9 +63,9 @@ export const AudioResults = () => {
             comfortable pace. Research shows that the most of popular TED talks
             are between 150 and 175 wpm. <br />
           </p>
-          <h5>Personalized feedback based on your session..</h5>
-          Below are some factors that we found based on your practice session,
-          most of which can be controlled by you.
+          <h5>How to achieve optimal score</h5>
+          Below are some factors that affects speech rate, most of which can be
+          controlled by you.
           <ul>
             <li>
               <b>Nervousness</b> - When you're nervous, you speak much faster
@@ -58,10 +96,27 @@ export const AudioResults = () => {
       ),
     },
     {
-      val: "0",
-      attr: `Speech confidence score: `,
+      val: "",
+      attr: `Speech analysis : `,
       expl: (
         <div>
+          <Row className="mb-3">
+            <Col></Col>
+            <Col xs={5}>
+              <PieChart
+                data={emoList}
+                label={({ dataEntry }) => dataEntry.title}
+                labelStyle={{
+                  fontSize: "6px",
+                  fontFamily: "sans-serif",
+                  fill: "#212529",
+                  fontWeight: "700",
+                }}
+                animate
+              />
+            </Col>
+            <Col style={{ textAlign: "justify" }} className="my-auto"></Col>
+          </Row>
           <h5>Why speech confidence is important?</h5>
           <p>
             Public speaking is about getting your message across to your
@@ -73,9 +128,9 @@ export const AudioResults = () => {
             this is amplified and if you are lacking in confidence this is
             amplified too.
           </p>
-          <h5>Personalized feedback based on your session..</h5>
-          Below are some factors that we found based on your practice session,
-          most of which can be controlled by you.
+          <h5>How to achieve confidence in speaking..</h5>
+          Below are some factors that helps to speak confidently, most of which
+          can be controlled by you.
           <ul>
             <li>
               <b>Know your topic</b> - The better you understand and care what
