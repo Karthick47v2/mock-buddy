@@ -7,7 +7,7 @@ export const VideoResults = () => {
 
   const videoScores = [
     {
-      val: videoResults.visibility_score,
+      val: Math.round(videoResults.visibility_score * 100) + "%",
       attr: `Visibility score: `,
       expl: (
         <div>
@@ -35,7 +35,7 @@ export const VideoResults = () => {
       ),
     },
     {
-      val: videoResults.posture_score,
+      val: Math.round(videoResults.posture_score * 100) + "%",
       attr: `Eye-contact score: `,
       expl: (
         <div>
@@ -74,7 +74,7 @@ export const VideoResults = () => {
       ),
     },
     {
-      val: videoResults.interactivity_score,
+      val: Math.round(videoResults.interactivity_score * 100) + "%",
       attr: `Interactivity score: `,
       expl: (
         <div>

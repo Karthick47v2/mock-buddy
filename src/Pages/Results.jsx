@@ -33,15 +33,17 @@ export const Results = () => {
         Object.keys(videoResults).length === 0
       )
     ) {
-      dispatch(
-        fetchPPTXResults({
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ url: gLink }),
-        })
-      );
+      if (Object.keys(pptxResults).length === 0) {
+        dispatch(
+          fetchPPTXResults({
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: gLink }),
+          })
+        );
+      }
     }
   }, [audioResults, videoResults]);
 

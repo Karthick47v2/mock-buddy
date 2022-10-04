@@ -12,9 +12,7 @@ export const ResultsAccordionMapper = (props) => {
     <Accordion className="mt-5" data-testid="accordion">
       {props.scores.map((score, idx) => (
         <Accordion.Item key={idx} eventKey={idx} className="mt-1">
-          <Accordion.Header>
-            {score.attr + parseFloat(score.val).toFixed(2)}
-          </Accordion.Header>
+          <Accordion.Header>{score.attr + score.val}</Accordion.Header>
           <Accordion.Body> {score.expl}</Accordion.Body>
         </Accordion.Item>
       ))}

@@ -11,7 +11,6 @@ export const fetchAudioResults = (post) => {
     };
     try {
       const audio = await fetchHandler();
-      console.log(audio);
       dispatch(avActions.setAudioResults(audio));
     } catch (err) {
       console.log(err.message);
@@ -27,7 +26,6 @@ export const fetchVideoResults = () => {
     };
     try {
       const video = await fetchHandler();
-      console.log(video);
       dispatch(avActions.setVideoResults(video));
     } catch (err) {
       console.log(err.message);
