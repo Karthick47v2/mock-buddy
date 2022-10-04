@@ -14,7 +14,8 @@ import { slideActions } from "../store/slide-slice";
  * websocket
  * @type {socket}
  */
-const socket = io(process.env.REACT_APP_END_POINT);
+const video_socket = io(process.env.REACT_APP_END_POINT);
+const audio_socket = io(process.env.REACT_APP_AUDIO_END_POINT);
 
 export const VideoStream = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export const VideoStream = () => {
 
   const [height, setHeight] = useState(600);
   const [width, setWidth] = useState(800);
+  const [dummyRec, setDummyRec] = useState(false);
   const divRef = useRef(null);
 
   // reference for webcam
@@ -30,25 +32,40 @@ export const VideoStream = () => {
 
   // send recorded audio and request for audio & video feedback on record stop
   const onRecStop = async (blob) => {
-    dispatch(avActions.resetResults());
-    dispatch(slideActions.resetResults());
+    let reader = new FileReader();
+    reader.readAsDataURL(blob["blob"]);
+    reader.onloadend = function () {
+      let b64 = reader.result;
+      audio_socket.emit("audio_out", b64);
+    };
 
-    // send recorded audio wrapped in formdat as POST req
-    const formData = new FormData();
-    let blobWithProp = new Blob([blob["blob"]], blob["options"]);
-
-    formData.append("file", blobWithProp);
-
-    dispatch(practiceActions.switchLoading(true));
-    dispatch(practiceActions.switchRestrictAccess(false));
-
-    // POST req - audio
-    dispatch(fetchAudioResults({ method: "POST", body: formData }));
-
-    // GET req - video
-    dispatch(fetchVideoResults());
-    navigate("results");
+    setDummyRec(true);
   };
+
+  useEffect(() => {
+    if (!isRecord && dummyRec) {
+      dispatch(avActions.resetResults());
+      dispatch(slideActions.resetResults());
+
+      dispatch(practiceActions.switchLoading(true));
+      dispatch(practiceActions.switchRestrictAccess(false));
+
+      // GET req - video
+      dispatch(fetchVideoResults());
+      dispatch(fetchAudioResults());
+      navigate("results");
+    }
+  }, [dummyRec, isRecord]);
+
+  useEffect(() => {
+    if (isRecord) {
+      setDummyRec(true);
+      const recSwitch = setInterval(() => {
+        setDummyRec(false);
+      }, 10000);
+      return () => clearInterval(recSwitch);
+    }
+  }, [isRecord]);
 
   // webcam preview
   useEffect(() => {
@@ -78,7 +95,7 @@ export const VideoStream = () => {
     // socket connection
     const socketInterval = setInterval(() => {
       if (!webcamRef.current.getScreenshot()) return;
-      socket.emit("process_frame", webcamRef.current.getScreenshot());
+      video_socket.emit("process_frame", webcamRef.current.getScreenshot());
     }, 1000);
     return () => clearInterval(socketInterval);
   }, [isRecord]);
@@ -119,7 +136,7 @@ export const VideoStream = () => {
       />
       <div style={{ display: "none" }}>
         <ReactMic
-          record={isRecord}
+          record={isRecord && dummyRec}
           onStop={onRecStop}
           mimeType="audio/wav"
           channelCount={1}
