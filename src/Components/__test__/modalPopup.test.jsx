@@ -32,10 +32,3 @@ describe("Test ModalPopup attributes", () => {
     expect(screen.getByTestId("insert-link")).toBeInTheDocument();
   });
 });
-
-describe("Test ModalPopup component", () => {
-  test("Render submit form on screen", () => {
-    setup();
-    expect(screen.getByTestId("slide-input")).toBeInTheDocument();
-  });
-});
