@@ -9,6 +9,8 @@ on:
 
 env:
   REACT_APP_END_POINT: ${{ secrets.END_POINT }}
+  REACT_APP_LANG_END_POINT: ${{secrets.REACT_APP_LANG_END_POINT}}
+  REACT_APP_AUDIO_END_POINT: ${{secrets.REACT_APP_AUDIO_END_POINT}}
 
 jobs:
   react_test:
