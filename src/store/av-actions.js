@@ -4,7 +4,7 @@ export const fetchAudioResults = (post) => {
   return async (dispatch) => {
     const fetchHandler = async () => {
       const res = await fetch(
-        process.env.REACT_APP_END_POINT + "audio_out/",
+        process.env.REACT_APP_AUDIO_END_POINT + "audio_fb/",
         post
       );
       return res.json();
