@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/mock-buddy/static/css/main.905e8030.css",
-    "main.js": "/mock-buddy/static/js/main.5df5929a.js",
+    "main.js": "/mock-buddy/static/js/main.3b026e76.js",
     "static/media/step2.png": "/mock-buddy/static/media/step2.05e6bb5703a8e2d58f06.png",
     "static/media/404.svg": "/mock-buddy/static/media/404.bdf1c60c297dc6528f56fe6a382dacdf.svg",
     "static/media/audio.svg": "/mock-buddy/static/media/audio.9d7710dff773bb4bde110ea5b6fb4f80.svg",
@@ -9,10 +9,10 @@
     "static/media/video.svg": "/mock-buddy/static/media/video.160b9c673108010bead6d65fdd7a9a00.svg",
     "index.html": "/mock-buddy/index.html",
     "main.905e8030.css.map": "/mock-buddy/static/css/main.905e8030.css.map",
-    "main.5df5929a.js.map": "/mock-buddy/static/js/main.5df5929a.js.map"
+    "main.3b026e76.js.map": "/mock-buddy/static/js/main.3b026e76.js.map"
   },
   "entrypoints": [
     "static/css/main.905e8030.css",
-    "static/js/main.5df5929a.js"
+    "static/js/main.3b026e76.js"
   ]
 }
