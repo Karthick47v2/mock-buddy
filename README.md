@@ -14,7 +14,7 @@ Communication is the most important skill for improving our career. We all had h
 
 Supporting repositories,
 
-- Back-end -> [mock-buddy-server](https://github.com/Karthick47v2/mock-buddy-server)
+- Back-end (Microservices)-> [mock-buddy-video-server](https://github.com/Karthick47v2/mock-buddy-video-server), [mock-buddy-audio-server](https://github.com/Karthick47v2/mock-buddy-audio-server), [mock-buddy-slide-server](https://github.com/Karthick47v2/mock-buddy-slide-server)
 - Face landmark detector training -> [face-landmark-detector](https://github.com/Karthick47v2/face-landmark-detector)
 - Speech emotion classifier training -> [speech-emotion-classifier](https://github.com/Karthick47v2/speech-emotion-classifier)
 
@@ -34,7 +34,7 @@ Screenshots:
 
 ## Install
 
-```sh
+```
 npm install --force
 ```
 
@@ -42,7 +42,7 @@ npm install --force
 
 \*Tested on Firefox and Google Chrome
 
-```sh
+```
 npm start
 ```
 
