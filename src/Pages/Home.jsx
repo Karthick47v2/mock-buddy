@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
@@ -67,7 +67,9 @@ export const Home = () => {
         </Col>
       </Row>
       <Row>
-        <h1 className="mt-5 mb-5"> About Mock-Buddy </h1>
+        <h1 className="mt-5 mb-5" data-testid="home-head">
+          About Mock-Buddy
+        </h1>
       </Row>
       {abtTxt.map((abt, index) => (
         <Row key={index} className="mb-5">
