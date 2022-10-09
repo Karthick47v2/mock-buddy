@@ -46,11 +46,3 @@ body {
 .nav-tabs .nav-link.active {
   border-bottom: solid 4px #6c63ff !important;
 }
-
-.picker-dialog-bg {
-  z-index: 20000 !important;
-}
-
-.picker-dialog {
-  z-index: 20001 !important;
-}
