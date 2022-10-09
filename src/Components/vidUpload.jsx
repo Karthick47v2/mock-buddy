@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { DrivePicker } from "./drivePicker";
-import { practiceActions } from "../store/practice-slice";
-import { avActions } from "../store/av-slice";
-import { slideActions } from "../store/slide-slice";
+import React from "react";
+// import { Button } from "react-bootstrap";
+// import { useDispatch, useSelector } from "react-redux";
+// // import { DrivePicker } from "./drivePicker";
+// import { practiceActions } from "../store/practice-slice";
+// import { avActions } from "../store/av-slice";
+// import { slideActions } from "../store/slide-slice";
 
 export const VidUpload = () => {
-  const dispatch = useDispatch();
-  const gLink = useSelector((state) => state.slide.slidesLink);
-  const dLink = useSelector((state) => state.av.driveLink);
-  const [isSlideShared, setIsSlideShared] = useState(true);
-  const [isCRCTVidShared, setIsCRCTVidShared] = useState("");
+  // const dispatch = useDispatch();
+  // const gLink = useSelector((state) => state.slide.slidesLink);
+  // const dLink = useSelector((state) => state.av.driveLink);
+  // const [isSlideShared, setIsSlideShared] = useState(true);
+  // const [isCRCTVidShared, setIsCRCTVidShared] = useState("");
 
-  const onClickHandler = () => {
-    dispatch(avActions.resetResults());
-    dispatch(slideActions.resetResults());
+  // const onClickHandler = () => {
+  //   dispatch(avActions.resetResults());
+  //   dispatch(slideActions.resetResults());
 
-    dispatch(practiceActions.switchLoading(true));
-    dispatch(practiceActions.switchRestrictAccess(false));
+  //   dispatch(practiceActions.switchLoading(true));
+  //   dispatch(practiceActions.switchRestrictAccess(false));
 
-    // // POST req - audio
-    // dispatch(fetchAudioResults({ method: "POST", body: formData }));
+  //   // // POST req - audio
+  //   // dispatch(fetchAudioResults({ method: "POST", body: formData }));
 
-    // // GET req - video
-    // dispatch(fetchVideoResults());
-    // navigate("results");
-  };
+  //   // // GET req - video
+  //   // dispatch(fetchVideoResults());
+  //   // navigate("results");
+  // };
 
   return (
     <>
-      <div className="mt-3 d-flex flex-row">
+      {/* <div className="mt-3 d-flex flex-row">
         <DrivePicker
           label={"Choose Slide"}
           viewId={"PRESENTATIONS"}
@@ -105,7 +105,8 @@ export const VidUpload = () => {
         }
       >
         Get Results
-      </Button>
+      </Button> */}
+      <h2> Coming Soon... </h2>
     </>
   );
 };
