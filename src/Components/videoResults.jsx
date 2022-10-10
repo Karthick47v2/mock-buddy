@@ -74,7 +74,7 @@ export const VideoResults = () => {
       ),
     },
     {
-      val: Math.round(videoResults.interactivity_score * 100) + "%",
+      val: (Math.round(videoResults.interactivity_score * 100) % 100) + "%",
       attr: `Interactivity score: `,
       expl: (
         <div>
