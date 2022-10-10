@@ -12,33 +12,42 @@ export const AudioResults = () => {
   const colorPalette = ["#6c63ff", "#8c7cff", "#ab96ff", "#c9b1ff", "#e8cdff"];
 
   useEffect(() => {
+    let emoCount = Array(3).fill(0);
     setEmoList([]);
     for (const [idx, [key, val]] of Object.entries(Object.entries(ser))) {
       if (idx >= 3) {
         break;
       }
-      let emo;
       switch (key) {
         case "0":
         case "2":
         case "3":
         case "5":
-          emo = "Neutral";
+          emoCount[0]++;
           break;
         case "1":
         case "6":
-          emo = "Pleasant";
+          emoCount[1]++;
           break;
         case "4":
-          emo = "Fear";
+          emoCount[2]++;
           break;
         default:
           break;
       }
-      setEmoList((arr) => [
-        ...arr,
-        { title: emo, value: val, color: colorPalette[idx] },
-      ]);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      if (emoCount[i] > 0) {
+        setEmoList((arr) => [
+          ...arr,
+          {
+            title: i === 0 ? "Neutral" : i === 1 ? "Pleasant" : "Fear",
+            value: emoCount[i],
+            color: colorPalette[i],
+          },
+        ]);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
