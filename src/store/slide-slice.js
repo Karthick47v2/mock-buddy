@@ -4,6 +4,7 @@ const slideSlice = createSlice({
   // CEP-MID - https://docs.google.com/presentation/d/1BVRPYon5oT-a3WGGzN6gPHfZ_k9E9UwwbqazZeY1Srg/edit?usp=sharing
   name: "slide",
   initialState: {
+    isCrashed: false,
     slidesLink:
       "https://docs.google.com/presentation/d/1Dpv-1o9F3g6fZtwiel9boE8Vd1u_GJIpHEU6sO6OTR8/edit?usp=sharing",
     errrorStatus: false,
@@ -21,6 +22,9 @@ const slideSlice = createSlice({
     },
     resetResults(state) {
       state.pptxResults = {};
+    },
+    setServerCrashed(state, action) {
+      state.isCrashed = action;
     },
     resetReducer(state) {
       state.errorStatus = false;

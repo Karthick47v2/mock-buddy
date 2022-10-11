@@ -34,24 +34,25 @@ export const Results = () => {
       )
     ) {
       if (Object.keys(pptxResults).length === 0) {
-        dispatch(
-          fetchPPTXResults({
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ url: gLink }),
-          })
-        );
+        dispatch(practiceActions.switchLoading(false));
+        // dispatch(
+        //   fetchPPTXResults({
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ url: gLink }),
+        //   })
+        // );
       }
     }
   }, [audioResults, videoResults]);
 
-  useEffect(() => {
-    if (Object.keys(pptxResults).length !== 0) {
-      dispatch(practiceActions.switchLoading(false));
-    }
-  }, [pptxResults]);
+  // useEffect(() => {
+  //   if (Object.keys(pptxResults).length !== 0) {
+  //     dispatch(practiceActions.switchLoading(false));
+  //   }
+  // }, [pptxResults]);
 
   return (
     <>
@@ -90,9 +91,9 @@ export const Results = () => {
                 </Col>
               </Row>
             </Tab>
-            <Tab eventKey={"slide"} title="Slide metrics">
+            {/* <Tab eventKey={"slide"} title="Slide metrics">
               <SlideResults />
-            </Tab>
+            </Tab> */}
           </Tabs>
         </Container>
       )}

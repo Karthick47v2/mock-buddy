@@ -112,17 +112,25 @@ export const AudioResults = () => {
           <Row className="mb-3">
             <Col></Col>
             <Col xs={5}>
-              <PieChart
-                data={emoList}
-                label={({ dataEntry }) => dataEntry.title}
-                labelStyle={{
-                  fontSize: "6px",
-                  fontFamily: "sans-serif",
-                  fill: "#212529",
-                  fontWeight: "700",
-                }}
-                animate
-              />
+              {emoList.length !== 0 ? (
+                <PieChart
+                  data={emoList}
+                  label={({ dataEntry }) => dataEntry.title}
+                  labelStyle={{
+                    fontSize: "6px",
+                    fontFamily: "sans-serif",
+                    fill: "#212529",
+                    fontWeight: "700",
+                  }}
+                  animate
+                />
+              ) : (
+                <p>
+                  {" "}
+                  You need to practice atleast 10 seconds... If thats not the
+                  problem please check your mic and try again
+                </p>
+              )}
             </Col>
             <Col style={{ textAlign: "justify" }} className="my-auto"></Col>
           </Row>
