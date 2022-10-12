@@ -11,8 +11,8 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { practiceActions } from "../store/practice-slice";
-import { fetchPPTXResults } from "../store/slide-actions";
-import { SlideResults } from "../Components/slideResults";
+// import { fetchPPTXResults } from "../store/slide-actions";
+// import { SlideResults } from "../Components/slideResults";
 import { AudioResults } from "../Components/audioResults";
 import { VideoResults } from "../Components/videoResults";
 import audio from "../Images/results-page/audio.svg";
@@ -20,7 +20,7 @@ import video from "../Images/results-page/video.svg";
 
 export const Results = () => {
   const dispatch = useDispatch();
-  const gLink = useSelector((state) => state.slide.slidesLink);
+  // const gLink = useSelector((state) => state.slide.slidesLink);
   const loading = useSelector((state) => state.practice.isLoading);
   const audioResults = useSelector((state) => state.av.audioResults);
   const videoResults = useSelector((state) => state.av.videoResults);

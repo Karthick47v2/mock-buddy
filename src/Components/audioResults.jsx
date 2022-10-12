@@ -14,7 +14,7 @@ export const AudioResults = () => {
   useEffect(() => {
     let emoCount = Array(3).fill(0);
     setEmoList([]);
-    for (const [idx, [key, val]] of Object.entries(Object.entries(ser))) {
+    for (const [idx, [key]] of Object.entries(Object.entries(ser))) {
       if (idx >= 3) {
         break;
       }
