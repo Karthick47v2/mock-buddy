@@ -43,7 +43,7 @@ jobs:
       matrix:
         node-version: [16.x]
 
-    # needs: react_test
+    needs: react_test
     if: "contains(github.event.head_commit.message, 'deploy to gh')"
 
     steps:
