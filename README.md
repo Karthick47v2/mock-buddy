@@ -24,7 +24,10 @@ Below shown high-level diagram represents the workflow,
 
 Screenshots:
 
-[SOON]
+<img src="img/home.png" alt="Home" style="width: 600px"/>
+<img src="img/prac.png" alt="Practice" style="width: 600px"/>
+<img src="img/result-1.png" alt="Result-1" style="width: 600px"/>
+<img src="img/result-2.png" alt="Result-2" style="width: 600px"/>
 
 # Development
 
