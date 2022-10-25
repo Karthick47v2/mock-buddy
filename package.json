@@ -8,7 +8,7 @@
     "@babel/preset-env": "^7.19.3",
     "@babel/preset-react": "^7.18.6",
     "@reduxjs/toolkit": "^1.8.5",
-    "bootstrap": "^5.2.1",
+    "bootstrap": "^5.2.2",
     "fs": "^0.0.2",
     "jest-fetch-mock": "^3.0.3",
     "react": "^18.2.0",
